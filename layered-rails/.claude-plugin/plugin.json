@@ -1,0 +1,23 @@
+{
+  "name": "layered-rails",
+  "version": "1.0.0",
+  "description": "Design and review Rails applications using layered architecture principles from 'Layered Design for Ruby on Rails Applications'",
+  "author": {
+    "name": "Vladimir Dementyev",
+    "url": "https://github.com/palkan"
+  },
+  "homepage": "https://www.packtpub.com/en-us/product/layered-design-for-ruby-on-rails-applications-9781806114221",
+  "repository": "https://github.com/palkan/layered-rails",
+  "license": "MIT",
+  "keywords": [
+    "rails",
+    "ruby",
+    "architecture",
+    "layered-design",
+    "code-review",
+    "refactoring",
+    "service-objects",
+    "form-objects",
+    "policy-objects"
+  ]
+}
