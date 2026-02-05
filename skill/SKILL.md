@@ -45,8 +45,9 @@ Rails applications are organized into four architecture layers with **unidirecti
 1. **Analyze codebase** - Run `/layers:analyze` for full analysis or `/layers:analyze:callbacks`, `/layers:analyze:gods` for specific checks
 2. **Review code changes** - Run `/layers:review` for layered architecture review
 3. **Run specification test** - Run `/layers:spec-test` on specific files
-4. **Plan feature implementation** - I'll guide you using layered principles
-5. **Implement specific pattern** - I'll help with authorization, notifications, view components, AI integration, etc.
+4. **Plan gradual adoption** - Run `/layers:gradual [goal]` to plan incremental layerification
+5. **Plan feature implementation** - I'll guide you using layered principles
+6. **Implement specific pattern** - I'll help with authorization, notifications, view components, AI integration, etc.
 
 ## Core Principles
 
@@ -119,6 +120,7 @@ See [Specification Test Reference](references/core/specification-test.md) for de
 | `/layers:analyze` | Full codebase abstraction layer analysis |
 | `/layers:analyze:callbacks` | Score model callbacks, find extraction candidates |
 | `/layers:analyze:gods` | Find God objects via churn × complexity |
+| `/layers:gradual [goal]` | Plan gradual adoption of layered patterns |
 
 ## Topic References
 

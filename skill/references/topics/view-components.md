@@ -296,6 +296,61 @@ end
 </div>
 ```
 
+## Extraction Signals
+
+### From Helpers
+
+Extract helpers to ViewComponents when you see:
+
+| Signal | Example | Action |
+|--------|---------|--------|
+| Heavy `tag.*` usage | `tag.div`, `tag.button` chains | Extract to component with template |
+| Complex data attributes | `data: { controller: ..., action: ... }` | Component encapsulates Stimulus wiring |
+| Conditional CSS classes | `class: "foo #{bar if baz}"` | Component method for class logic |
+| Nested structure | Helper yielding to blocks with wrappers | Component with slots |
+| Error handling in render | `rescue` in helper methods | Component with proper error boundaries |
+
+**Before (Helper):**
+```ruby
+def message_area_tag(room, &)
+  tag.div id: "message-area", class: "message-area", data: {
+    controller: "messages presence drop-target",
+    action: [ messages_actions, drop_target_actions, presence_actions ].join(" "),
+    messages_page_url_value: room_messages_url(room)
+  }, &
+end
+```
+
+**After (ViewComponent):**
+```ruby
+class MessageAreaComponent < ViewComponent::Base
+  def initialize(room:)
+    @room = room
+  end
+end
+```
+
+```erb
+<div id="message-area"
+     class="message-area"
+     data-controller="messages presence drop-target"
+     data-action="<%= stimulus_actions %>"
+     data-messages-page-url-value="<%= room_messages_url(@room) %>">
+  <%= content %>
+</div>
+```
+
+### From Presenters
+
+Extract presenters to ViewComponents when:
+- Presenter has a `render` method returning HTML
+- Presenter accepts `context: self` for helper access
+- Presenter builds complex markup via `content_tag` or `tag.*`
+
+**Signal:** `SomePresentation.new(..., context: self).render`
+
+This pattern indicates the presenter is doing component work without component benefits.
+
 ## Anti-Patterns
 
 ### Data Fetching in Components
