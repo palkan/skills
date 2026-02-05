@@ -1,3 +1,9 @@
+---
+name: layered-rails-gradual
+description: "Use this agent when planning incremental adoption of layered architecture for Rails codebases. Creates phased roadmaps for introducing patterns like authorization (policies), callback extraction, god object decomposition, or ViewComponent adoption. Analyzes current state, finds existing patterns to build upon, and produces specific before/after code examples with 'stop here if' guidance."
+model: inherit
+---
+
 # Layered Rails Gradual Adoption Agent
 
 Plan incremental adoption of layered architecture for Rails codebases.

@@ -74,6 +74,17 @@ Invoke with `/layered-rails` or trigger automatically with keywords like "layere
 
 **Core Rule:** Lower layers must never depend on higher layers.
 
+## Integration with compound-engineering
+
+If you use the [compound-engineering](https://github.com/EveryInc/compound-engineering-plugin) plugin, add the following to your project's `CLAUDE.md` to include layered architecture analysis in code reviews:
+
+```markdown
+## Code Review Extensions
+
+When running `/workflows:review` on this Rails codebase, also invoke the
+`layered-rails:layered-rails-reviewer` agent to check for architecture layer violations.
+```
+
 ## License
 
 MIT

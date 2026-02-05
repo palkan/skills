@@ -1,6 +1,6 @@
 {
   "name": "layered-rails",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Design and review Rails applications using layered architecture principles from 'Layered Design for Ruby on Rails Applications'",
   "author": {
     "name": "Vladimir Dementyev",
