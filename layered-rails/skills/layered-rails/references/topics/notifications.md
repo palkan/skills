@@ -193,6 +193,12 @@ end
 NotifyPostPublished.new(post).call
 ```
 
+## Triggering from Workflows
+
+When notifications are tied to state transitions, standalone workflows are an ideal place to trigger them via `after_transition` callbacks. This keeps models free of notification logic while centralizing state-related side effects.
+
+See [Triggering Deliveries from Workflows](../patterns/state-machines.md#triggering-deliveries-from-workflows) for implementation details.
+
 ## Anti-Patterns
 
 ### Notifications in Models

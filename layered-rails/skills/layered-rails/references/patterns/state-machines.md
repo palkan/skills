@@ -187,6 +187,62 @@ class Post < ApplicationRecord
 end
 ```
 
+### Triggering Deliveries from Workflows
+
+Workflows are an excellent place to trigger notifications - they keep side effects out of models while centralizing state-related behavior:
+
+```ruby
+class Cable::ProvisionWorkflow < ApplicationWorkflow
+  param :cable
+
+  workflow do
+    state :pending do
+      event :create, transitions_to: :creating
+    end
+
+    state :creating do
+      event :created, transitions_to: :created
+      event :error, transitions_to: :failed
+    end
+
+    state :created do
+      event :terminate, transitions_to: :terminating
+    end
+
+    state :failed do
+      event :create, transitions_to: :creating
+    end
+    # ...
+  end
+
+  # Notify on successful creation
+  after_transition(if: :created?) do
+    CableDelivery.with(cable:).provisioned.deliver_later
+  end
+
+  # Notify admins on failure
+  after_transition(if: :failed?) do
+    Admin::CableDelivery.with(cable:).provision_failed.deliver_later
+  end
+
+  private
+
+  def persist_workflow_state(new_state)
+    cable.update!(status: new_state)
+  end
+
+  def load_workflow_state
+    cable.status
+  end
+end
+```
+
+**Benefits:**
+- Keeps models free of notification logic (no layer violation)
+- Notifications tied to state transitions, not arbitrary callbacks
+- Easy to see all side effects for a given state change
+- Testable in isolation from the model
+
 ## Events Over Direct Transitions
 
 ```ruby
