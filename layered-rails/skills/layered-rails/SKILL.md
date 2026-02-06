@@ -151,6 +151,7 @@ For library-specific guidance:
 | workflow | State machines | [workflow.md](references/gems/workflow.md) |
 | rubanok | Filter/transformation DSL | [rubanok.md](references/gems/rubanok.md) |
 | active_agent | AI agent framework | [active-agent.md](references/gems/active-agent.md) |
+| active_job-performs | Eliminate anemic jobs | [active-job-performs.md](references/gems/active-job-performs.md) |
 
 ## Extraction Signals
 

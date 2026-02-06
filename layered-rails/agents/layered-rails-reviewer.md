@@ -96,7 +96,36 @@ Identify decomposition opportunities:
 - Do services share patterns that could become abstractions?
 - Are there 3+ services doing similar things?
 
-### 6. Abstraction Assessment
+### 6. Anemic Job Detection
+
+Flag job classes that just delegate to model methods:
+
+```ruby
+# BAD: Anemic job
+class NotifyRecipientsJob < ApplicationJob
+  def perform(record)
+    record.notify_recipients  # Single delegation = anemic
+  end
+end
+```
+
+**Signals:**
+- Job's `perform` is single line calling method on argument
+- Model has `*_later` method that just calls `SomeJob.perform_later(self)`
+- `app/jobs` has many similar thin wrappers
+
+**Recommendation:** Use `active_job-performs` gem:
+
+```ruby
+# GOOD: No separate job file
+class Post < ApplicationRecord
+  performs def notify_recipients
+    # Logic here
+  end
+end
+```
+
+### 7. Abstraction Assessment
 
 Evaluate pattern choices:
 
