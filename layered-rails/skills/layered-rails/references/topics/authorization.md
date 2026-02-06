@@ -25,6 +25,8 @@ Authorization determines what authenticated users can do. It belongs in the appl
 - **Policies are application layer** — bridge between presentation and domain
 - **Models are agnostic** — domain doesn't know about permissions
 - **Scoping over checking** — load only accessible records when possible
+- **Minimal rules** — `show?` for visibility, `manage?` for modifications
+- **Composition over complexity** — delegate to other policies via `allowed_to?`
 
 ## Implementation with Action Policy
 
@@ -55,6 +57,19 @@ class PostPolicy < ApplicationPolicy
   end
 end
 ```
+
+### Rule Design
+
+Keep rules minimal and consistent:
+
+| Rule | Purpose |
+|------|---------|
+| `show?` | Visibility — who can see this resource |
+| `manage?` | Management — fallback for update?, destroy?, etc. |
+| `create?` | Creation — often delegates to parent's manage? |
+| `index?` | Listing — often same as show? or delegates to parent |
+
+**Custom rules** are appropriate for domain operations (`transfer?`, `cancel?`) and parent policy groupings (`manage_billing?`). If a custom rule maps to a full controller with its own views, consider a dedicated resource instead.
 
 ### Controller Enforcement
 
@@ -181,6 +196,30 @@ class DocumentPolicy < ApplicationPolicy
 end
 ```
 
+## Error Handling
+
+Return 404 for visibility failures (don't leak resource existence), 403 for permission failures:
+
+```ruby
+module Authorization
+  extend ActiveSupport::Concern
+
+  included do
+    rescue_from ActionPolicy::Unauthorized, with: :handle_unauthorized
+  end
+
+  private
+
+  def handle_unauthorized(exception)
+    if exception.rule == :show?
+      raise ActiveRecord::RecordNotFound  # 404 - don't leak existence
+    else
+      head :forbidden  # 403 - record exists but action denied
+    end
+  end
+end
+```
+
 ## Anti-Patterns
 
 ### Authorization in Models
@@ -248,8 +287,10 @@ end
 
 ## Testing
 
+### Policy Unit Tests
+
 ```ruby
-# Test policy rules
+# RSpec
 RSpec.describe PostPolicy do
   let(:user) { create(:user) }
   let(:admin) { create(:user, :admin) }
@@ -271,7 +312,24 @@ RSpec.describe PostPolicy do
   end
 end
 
-# Test enforcement
+# Minitest
+class BoardPolicyTest < ActiveSupport::TestCase
+  test "board creator can manage" do
+    policy = BoardPolicy.new(@board, user: users(:david), account: @account)
+    assert policy.apply(:manage?)
+  end
+
+  test "create uses board context" do
+    policy = WebhookPolicy.new(board: @board, user: users(:david), account: @account)
+    assert policy.apply(:create?)
+  end
+end
+```
+
+### Controller Authorization Tests
+
+```ruby
+# RSpec
 RSpec.describe PostsController do
   include ActionPolicy::TestHelper
 
@@ -282,6 +340,17 @@ RSpec.describe PostsController do
       expect {
         put :update, params: { id: post.id, post: { title: "New" } }
       }.to be_authorized_to(:update?, post)
+    end
+  end
+end
+
+# Minitest
+class PostsControllerTest < ActionDispatch::IntegrationTest
+  include ActionPolicy::TestHelper
+
+  test "update authorizes" do
+    assert_authorized_to(:update?, posts(:one)) do
+      put post_path(posts(:one)), params: { post: { title: "New" } }
     end
   end
 end
