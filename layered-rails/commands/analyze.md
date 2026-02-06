@@ -130,7 +130,39 @@ For each concern, verify:
 - [ ] No hidden dependencies on including class
 - [ ] Doesn't recreate callback problems
 
-### 6. Pattern Gap Analysis
+### 6. Anti-Pattern Detection
+
+Check for common anti-patterns (see [Anti-Patterns Reference](../skills/layered-rails/references/anti-patterns.md)):
+
+**Anemic Jobs**
+```bash
+# Find job files with single-line perform methods
+grep -l "def perform" app/jobs/*.rb | xargs -I{} sh -c \
+  'echo "=== {} ===" && grep -A5 "def perform" {}'
+```
+
+Signal: Job's `perform` is single delegation to model method. Fix: Use `active_job-performs` gem.
+
+**Helper HTML Construction**
+```bash
+# Find helpers building HTML programmatically
+grep -r "tag\.\|content_tag" app/helpers/
+```
+
+Signal: Heavy `tag.div`, `tag.button` chains. Fix: Extract to ViewComponent.
+
+**Callback Control Flags**
+```bash
+# Find skip flags in models
+grep -r "attr_accessor :skip_" app/models/
+grep -r "unless: :skip_" app/models/
+```
+
+Signal: Virtual attributes to bypass callbacks. Fix: Extract callbacks to explicit service calls.
+
+For each anti-pattern, reference the specific fix in the anti-patterns documentation.
+
+### 7. Pattern Gap Analysis
 
 Identify missing abstractions:
 
@@ -149,6 +181,7 @@ Identify missing abstractions:
 - Layer compliance: [percentage]
 - God object candidates: [count]
 - Callback concerns: [count]
+- Anti-patterns detected: [count]
 
 ## Layer Violations
 
@@ -177,6 +210,15 @@ Identify missing abstractions:
 | user.rb | after_create :send_welcome | 1/5 | Extract to service |
 | post.rb | before_save :update_slug | 5/5 | Keep |
 
+## Anti-Patterns
+
+| Type | Location | Fix |
+|------|----------|-----|
+| Anemic Job | `NotifyRecipientsJob` | Use `performs` gem |
+| Helper HTML | `messages_helper.rb` | Extract to ViewComponent |
+
+See [Anti-Patterns Reference](../skills/layered-rails/references/anti-patterns.md) for details.
+
 ## Pattern Recommendations
 
 ### Immediate Actions
@@ -201,11 +243,14 @@ Identify missing abstractions:
 - Heavy callback chains (5+ callbacks)
 - God objects (>300 lines, high churn)
 - Authorization scattered across layers
+- Callback control flags (`skip_*` attributes)
 
 ### Minor
 - Missing abstractions (could benefit from patterns)
 - Concerns used by single model
 - Overly complex scopes
+- Anemic jobs (single-delegation wrappers)
+- Helper HTML construction (candidates for ViewComponents)
 
 ## Related Commands
 

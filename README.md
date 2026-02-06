@@ -2,7 +2,7 @@
 
 A Claude Code skill for designing and reviewing Rails applications using layered architecture principles.
 
-Based on [Layered Design for Ruby on Rails Applications](https://www.packtpub.com/en-us/product/layered-design-for-ruby-on-rails-applications-9781806114221) by Vladimir Dementyev.
+Based on the [code examples](https://github.com/PacktPublishing/Layered-Design-for-Ruby-on-Rails-Applications-Second-Edition) for the [Layered Design for Ruby on Rails Applications](https://www.packtpub.com/en-us/product/layered-design-for-ruby-on-rails-applications-9781806114221) book by Vladimir Dementyev.
 
 ## Installation
 
@@ -76,13 +76,12 @@ Invoke with `/layered-rails` or trigger automatically with keywords like "layere
 
 ## Integration with compound-engineering
 
-If you use the [compound-engineering](https://github.com/EveryInc/compound-engineering-plugin) plugin, add the following to your project's `CLAUDE.md` to include layered architecture analysis in code reviews:
+If you use the [compound-engineering](https://github.com/EveryInc/compound-engineering-plugin) plugin, you must add explicit intstructions to include layers-rails planning and reviewing agents to the list of agents for `/workflow:plan`, `/workflow:review`, etc. commands. Here is an example to put into your project's `CLAUDE.md`:
 
-```markdown
-## Code Review Extensions
+```md
+Extend the list of **review agents** with the `layered-rails:layered-rails-reviewer` agent to check for architecture layer violations. Must be applicable to such commands from the compound-engineering plugin as `/workflow:review`, `/plan_review`, and similar.
 
-When running `/workflows:review` on this Rails codebase, also invoke the
-`layered-rails:layered-rails-reviewer` agent to check for architecture layer violations.
+Extend the list of **planning agents** with the `layered-rails:layered-rails-gradual` agent to plan refactoring according to the layered design principles. Must be applicable to such commands from the compound-engineering plugin as `/workflow:plan`, `/deepen_plan`, and similar.
 ```
 
 ## License

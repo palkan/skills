@@ -6,13 +6,13 @@
   },
   "metadata": {
     "description": "Layered architecture design and review for Rails applications",
-    "version": "1.0.0"
+    "version": "1.1.0"
   },
   "plugins": [
     {
       "name": "layered-rails",
       "description": "Design and review Rails applications using layered architecture principles from 'Layered Design for Ruby on Rails Applications'",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "author": {
         "name": "Vladimir Dementyev",
         "url": "https://github.com/palkan"
