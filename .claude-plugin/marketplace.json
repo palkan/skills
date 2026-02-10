@@ -1,11 +1,11 @@
 {
-  "name": "palkan-layered-rails",
+  "name": "palkan-skills",
   "owner": {
     "name": "Vladimir Dementyev",
     "url": "https://github.com/palkan"
   },
   "metadata": {
-    "description": "Layered architecture design and review for Rails applications",
+    "description": "A collection of Claude Code skills by Vladimir Dementyev",
     "version": "1.1.0"
   },
   "plugins": [
@@ -17,7 +17,7 @@
         "name": "Vladimir Dementyev",
         "url": "https://github.com/palkan"
       },
-      "homepage": "https://github.com/palkan/layered-rails",
+      "homepage": "https://github.com/palkan/skills",
       "tags": ["rails", "ruby", "architecture", "layered-design", "code-review"],
       "source": "./layered-rails"
     }
