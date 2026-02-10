@@ -6,13 +6,13 @@
   },
   "metadata": {
     "description": "A collection of Claude Code skills by Vladimir Dementyev",
-    "version": "1.1.0"
+    "version": "1.2.0"
   },
   "plugins": [
     {
       "name": "layered-rails",
       "description": "Design and review Rails applications using layered architecture principles from 'Layered Design for Ruby on Rails Applications'",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "author": {
         "name": "Vladimir Dementyev",
         "url": "https://github.com/palkan"
