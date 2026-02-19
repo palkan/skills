@@ -7,5 +7,5 @@
 /node_modules/
 *.gem
 *.sqlite3
-.claude/settings.local.json
+.claude/*.local.*
 /docs/plans/

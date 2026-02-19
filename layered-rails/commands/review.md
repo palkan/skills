@@ -174,6 +174,86 @@ Location: `app/services/process_order_service.rb`
 **Priority:** Address layer violation first, then refactor service/model boundary.
 ```
 
+## Reviewing Test Files
+
+When reviewing test files, apply these principles:
+
+### Never Recommend Testing Private Methods via `send`
+
+Private methods are private for a reason — they're implementation details. Never suggest:
+
+```ruby
+# BAD — testing private steps via send
+processor.send(:parse_json!)
+processor.send(:import_board)
+processor.send(:import_columns)
+```
+
+If private methods need isolated testing, that's a signal the class should be decomposed into smaller public objects. Say that instead.
+
+### Expensive Operations: Combine Assertions Over One-Per-Test Dogma
+
+When a test setup is expensive (e.g., importing hundreds of records from a fixture), running it N times for N single-assertion tests is wasteful. Without RSpec + `before_all` (TestProf), Minitest has no way to share expensive state across tests.
+
+The pragmatic answer: **combine assertions in fewer tests**. This is better than the alternatives (slow suite, or testing privates via `send`):
+
+```ruby
+# GOOD — run import once, assert everything
+test "import creates board with columns, cards, tags, and comments" do
+  processor = TrelloImport::Processor.new(@import)
+  processor.import
+
+  # Board
+  assert_equal "HR Manager", @import.board.name
+
+  # Columns (only open lists)
+  assert_equal 3, @import.board.columns.count
+  assert @import.board.columns.exists?(name: "Inbox")
+
+  # Cards
+  assert_equal 5, @import.cards_count
+  card = @import.board.cards.find_by(title: "First task")
+  assert card.published?
+
+  # Tags
+  assert_equal 1, Current.account.tags.where(title: "account").count
+
+  # Comments
+  assert @import.comments_count > 0
+end
+```
+
+Keep separate tests only for genuinely independent scenarios (error paths, edge cases with different fixtures).
+
+### Removing Duplicate Tests: Show What Replaces Them
+
+Never recommend simply deleting tests without showing what takes their place. When a higher-layer test duplicates a lower-layer test (e.g., TrelloImport tests duplicating Processor tests), replace the duplicates with a **delegation test** that verifies the lower layer is invoked correctly:
+
+```ruby
+# INSTEAD OF deleting these and leaving nothing:
+#   "process imports board"
+#   "process imports columns"
+#   "process imports cards"
+#   ...
+
+# REPLACE WITH a delegation test:
+test "process delegates to Processor and tracks status" do
+  import = TrelloImport.create!(account: Current.account, user: @user, file: uploaded_file)
+
+  mock_processor = Minitest::Mock.new
+  mock_processor.expect(:import, nil)
+  TrelloImport::Processor.stub(:new, mock_processor) do
+    import.process
+  end
+  mock_processor.verify
+
+  assert import.completed?
+  assert_not_nil import.completed_at
+end
+```
+
+This proves TrelloImport delegates to Processor without re-testing all of Processor's behavior.
+
 ## Severity Levels
 
 ### 🔴 Critical
