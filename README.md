@@ -28,7 +28,44 @@ Design and review Rails applications using layered architecture principles from 
 
 ### Integration with compound-engineering
 
-If you use the [compound-engineering](https://github.com/EveryInc/compound-engineering-plugin) plugin, add explicit instructions to include layered-rails planning and reviewing agents. Example for your project's `CLAUDE.md`:
+We recommend asking Claude itself to update the instructions for Compound Engineering to include Layred Design features according to your needs. Below you can find some examples.
+
+If you use the [compound-engineering](https://github.com/EveryInc/compound-engineering-plugin) plugin, add explicit instructions to include layered-rails planning and reviewing agents.
+
+In your `compound-engineering.local.md` file:
+
+```md
+---
+review_agents:
+  - layered-rails
+  - rails-reviewer
+  - security-sentinel
+  # - ...
+---
+
+# ...
+
+# also worth adding something like:
+
+We are **gradually adopting layered design principles** from "Layered Design for Ruby on Rails Applications" — clean abstraction boundaries, explicit layers, and specification tests...
+
+```
+
+Similarly, for planning features, add to your `CLAUDE.md` (or `AGENTS.md`, or whatever) smth like:
+
+```md
+# ...
+
+### For planning agents
+
+When planning new features or architectural changes, use the `layered-rails` skill for analysis:
+- `/layers:gradual` — plan incremental adoption of layered patterns
+- `/layers:analyze` — full codebase architecture analysis
+- `/layers:review` — review code from a layered architecture perspective
+- `/layers:spec-test` — apply the specification test to evaluate layer placement
+```
+
+Alternatively, you can try to add shorter instructions to `CLAUDE.md`:
 
 ```md
 Extend the list of **review agents** with the `layered-rails:layered-rails-reviewer` agent to check for architecture layer violations. Must be applicable to such commands from the compound-engineering plugin as `/workflow:review`, `/plan_review`, and similar.
