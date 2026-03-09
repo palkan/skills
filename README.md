@@ -28,7 +28,7 @@ Design and review Rails applications using layered architecture principles from 
 
 ### Integration with compound-engineering
 
-We recommend asking Claude itself to update the instructions for Compound Engineering to include Layred Design features according to your needs. Below you can find some examples.
+We recommend asking Claude itself to update the instructions for Compound Engineering to include Layered Design features according to your needs. Below you can find some examples.
 
 If you use the [compound-engineering](https://github.com/EveryInc/compound-engineering-plugin) plugin, add explicit instructions to include layered-rails planning and reviewing agents.
 
