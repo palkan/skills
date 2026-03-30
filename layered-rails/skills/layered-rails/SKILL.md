@@ -14,6 +14,66 @@ Design and review Rails applications using layered architecture principles.
 
 ## Quick Start
 
+This skill is platform-neutral. The layered architecture rules, specification test,
+extraction signals, and pattern guidance apply the same way in Claude Code, Codex,
+and similar coding agents.
+
+## Platform Notes
+
+- **Claude Code**: If workflow labels such as `/layers:review` are exposed as native commands,
+  you can use them directly together with the bundled agents.
+- **Codex and other agents**: Treat workflow labels such as `/layers:review` and
+  `/layers:spec-test` as named workflows. Read the corresponding files in `commands/`
+  and apply the same process manually.
+
+## Recommended Workflow
+
+Use this default order unless the user asks for something narrower:
+
+1. Read project-local guidance first (`CLAUDE.md`, `.claude/CLAUDE.md`, `AGENTS.md`, style guides).
+2. Read the changed files or target paths before opening references.
+3. Classify the touched code by layer.
+4. Apply the specification test and layer boundary checks.
+5. Open only the relevant documents from `references/` as needed.
+6. For implementation work, make the smallest layer-safe change and then review the resulting diff again.
+
+## Default Review Output
+
+When reviewing code, prefer this output shape:
+
+```markdown
+## Layered Rails Review
+
+### Files Reviewed
+- path/to/file.rb (Presentation|Application|Domain|Infrastructure)
+
+### Layer Analysis
+- **Layers touched:** [...]
+- **Data flow:** OK | Violation detected
+
+### Findings
+
+🔴 **Critical: [Issue Type]**
+Location: `path/to/file.rb:line`
+**Problem:** ...
+**Fix:** ...
+
+⚠️ **Warning: [Issue Type]**
+Location: `path/to/file.rb:line`
+**Problem:** ...
+**Recommendation:** ...
+
+💡 **Suggestion: [Issue Type]**
+Location: `path/to/file.rb:line`
+**Suggestion:** ...
+
+### Summary
+- Highest priority fix first
+- Main extraction or simplification opportunity
+```
+
+If there are no findings, say so explicitly and note any residual risks or missing verification.
+
 Rails applications are organized into four architecture layers with **unidirectional data flow**:
 
 ```
@@ -40,14 +100,14 @@ Rails applications are organized into four architecture layers with **unidirecti
 
 **Core Rule:** Lower layers must never depend on higher layers.
 
-## What Would You Like To Do?
+## What To Use This For
 
-1. **Analyze codebase** - Run `/layers:analyze` for full analysis or `/layers:analyze:callbacks`, `/layers:analyze:gods` for specific checks
-2. **Review code changes** - Run `/layers:review` for layered architecture review
-3. **Run specification test** - Run `/layers:spec-test` on specific files
-4. **Plan gradual adoption** - Run `/layers:gradual [goal]` to plan incremental layerification
-5. **Plan feature implementation** - I'll guide you using layered principles
-6. **Implement specific pattern** - I'll help with authorization, notifications, view components, AI integration, etc.
+1. **Analyze codebase** - Use the architecture analysis workflows to assess layers, callbacks, and god objects
+2. **Review code changes** - Review a diff or selected files for layer violations
+3. **Run specification test** - Decide whether code belongs in its current layer
+4. **Plan gradual adoption** - Plan incremental refactors toward layered design
+5. **Plan feature implementation** - Choose abstractions that preserve downward-only dependencies
+6. **Implement specific pattern** - Apply layered guidance to authorization, notifications, view components, AI integration, and related Rails design work
 
 ## Core Principles
 
@@ -111,9 +171,12 @@ See [Specification Test Reference](references/core/specification-test.md) for de
 
 **Remember:** Services are a "waiting room" for code until proper abstractions emerge. Don't let `app/services` become a bag of random objects.
 
-## Commands Reference
+## Workflow Labels
 
-| Command | Purpose |
+These names are native Claude commands when the plugin is installed. In other agents,
+use them as shorthand for the corresponding workflow documents in `commands/`.
+
+| Workflow Label | Purpose |
 |---------|---------|
 | `/layers:review` | Review code changes from layered architecture perspective |
 | `/layers:spec-test` | Run specification test on specific files |
