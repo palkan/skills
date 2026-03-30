@@ -1,6 +1,8 @@
 # palkan/skills
 
-A collection of [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skills by [Vladimir Dementyev](https://github.com/palkan).
+A collection of coding-agent skills by [Vladimir Dementyev](https://github.com/palkan).
+The bundled plugins and commands target [Claude Code](https://docs.anthropic.com/en/docs/claude-code),
+while the core skill content is also usable from other environments such as Codex.
 
 ## Available Skills
 
@@ -15,7 +17,7 @@ Design and review Rails applications using layered architecture principles from 
 /plugin install layered-rails@palkan-skills
 ```
 
-**Commands:**
+**Workflow labels in Claude Code:**
 
 | Command | Purpose |
 |---------|---------|
@@ -25,6 +27,9 @@ Design and review Rails applications using layered architecture principles from 
 | `/layers:review` | Review code changes for layer violations |
 | `/layers:spec-test` | Run specification test on specific files |
 | `/layers:gradual [goal]` | Plan incremental adoption of layered patterns |
+
+In non-Claude environments, treat these labels as workflow names and follow the
+corresponding documents under `layered-rails/commands/`.
 
 ### Integration with compound-engineering
 
