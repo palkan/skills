@@ -42,7 +42,7 @@ Rails applications are organized into four architecture layers with **unidirecti
 
 ## What Would You Like To Do?
 
-1. **Analyze codebase** - Run `/layers:analyze` for full analysis or `/layers:analyze:callbacks`, `/layers:analyze:gods` for specific checks
+1. **Analyze codebase** - Run `/layers:analyze` for full analysis or `/layers:analyze:services`, `/layers:analyze:callbacks`, `/layers:analyze:gods` for specific checks
 2. **Review code changes** - Run `/layers:review` for layered architecture review
 3. **Run specification test** - Run `/layers:spec-test` on specific files
 4. **Plan gradual adoption** - Run `/layers:gradual [goal]` to plan incremental layerification
@@ -118,6 +118,7 @@ See [Specification Test Reference](references/core/specification-test.md) for de
 | `/layers:review` | Review code changes from layered architecture perspective |
 | `/layers:spec-test` | Run specification test on specific files |
 | `/layers:analyze` | Full codebase abstraction layer analysis |
+| `/layers:analyze:services` | Audit `app/services/` and service-like classes — conventions, clusters, layer hygiene, test consequences |
 | `/layers:analyze:callbacks` | Score model callbacks, find extraction candidates |
 | `/layers:analyze:gods` | Find God objects via churn × complexity |
 | `/layers:gradual [goal]` | Plan gradual adoption of layered patterns |

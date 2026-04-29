@@ -54,6 +54,8 @@ Infrastructure Layer:
 
 **Service Layer Structural Assessment** (when `app/services/` exists):
 
+For a deep audit of the service layer — conventions, specialization clusters, layer hygiene, test consequences, naming smells, domain-vs-application classification — run [`/layered-rails:analyze-services`](./analyze-services.md). The notes below are a quick triage; the dedicated command produces the full report.
+
 - **Organization check:**
   - Flat vs namespaced? Count top-level files vs files in subdirectories
   - What naming patterns exist? (`*Creator`, `*Updater`, `*Query`, `*Form`, `*Processor`, `*Handler`)
@@ -69,6 +71,7 @@ Infrastructure Layer:
   - A well-namespaced service layer with clear decomposition patterns can be healthy even at high counts
   - A flat `app/services/` with 200+ files is a red flag regardless of count
   - Produce specific assessments like: "271 services across 15 namespaces — well-organized but consider extracting 23 query-like services to `app/queries/`"
+  - For anything beyond a quick assessment, defer to `/layered-rails:analyze-services`
 
 ### 2. Layer Violation Detection
 
@@ -340,6 +343,7 @@ See [Anti-Patterns Reference](../skills/layered-rails/references/anti-patterns.m
 
 ## Related Commands
 
+- `/layers:analyze-services` - Deep audit of `app/services/` (conventions, clusters, layer hygiene, test consequences)
 - `/layers:analyze-callbacks` - Deep callback analysis
 - `/layers:analyze-gods` - Detailed god object analysis
 - `/layers:spec-test` - Apply specification test to specific code

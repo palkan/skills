@@ -20,6 +20,7 @@ Design and review Rails applications using layered architecture principles from 
 | Command | Purpose |
 |---------|---------|
 | `/layers:analyze` | Full codebase architecture analysis |
+| `/layers:analyze:services` | Audit `app/services/` — conventions, clusters, layer hygiene, test consequences |
 | `/layers:analyze:callbacks` | Score model callbacks, find extraction candidates |
 | `/layers:analyze:gods` | Find god objects via churn x complexity |
 | `/layers:review` | Review code changes for layer violations |
