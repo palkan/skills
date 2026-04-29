@@ -235,12 +235,11 @@ The matchers listed are **typical for the layer** — concrete syntax depends on
 
 In one sentence, state the single responsibility the new abstraction's spec describes (e.g., "the form spec describes validation rules and persistence on save; nothing else"). This is the litmus that the refactor actually moved the right code.
 
-**5. Library-agnostic recommendation + offer to elaborate**
+**5. Library-agnostic recommendation**
 
-Each cluster section ends with two lines:
+Each cluster section ends with a **library-neutral recommendation**: "Extract a `<layer-name>`. Libraries like `<libA>`, `<libB>`, `<libC>` are well-fit options; the team picks based on existing dependencies." Do not declare one library "the right choice" unless the codebase already commits to it.
 
-- A **library-neutral recommendation**: "Extract a `<layer-name>`. Libraries like `<libA>`, `<libB>`, `<libC>` are well-fit options; the team picks based on existing dependencies." Do not declare one library "the right choice" unless the codebase already commits to it.
-- An **offer to elaborate**: "Want me to sketch this with `<libA>` (or another)?" The user can then ask for a concrete example, sample code, or comparison.
+If a sketch with a specific library would be useful as a follow-up, surface it in the report's **Next Steps** section — don't inline a "Want me to sketch this?" prompt in the cluster body. The cluster section is for the recommendation; Next Steps is for the elaboration offers.
 
 This rule applies to **every** cluster recommendation in the report and to the Top 3 Actions. The command's job is to point at the right *layer*; the team picks the *library*.
 
@@ -485,7 +484,7 @@ For each smell encountered, name the cluster or files; do not list smells that d
 
 ### 8.4 Stating the test win for each recommendation
 
-Every recommendation in the final "Recommended Next Steps" section must include a one-line **Test win** indicating what specifically improves: faster specs, fewer stubs, framework matchers gained, duplicate coverage removed, layer leak closed. If no test win is identifiable, the recommendation is design-only — call that out so the user can weigh it accordingly.
+Every recommendation in the report (under **Top 3 Actions** and **Recommendations**) must include a one-line **Test win** indicating what specifically improves: faster specs, fewer stubs, framework matchers gained, duplicate coverage removed, layer leak closed. If no test win is identifiable, the recommendation is design-only — call that out so the user can weigh it accordingly.
 
 ## Step 9 — Anemic-Model Risk
 
@@ -713,8 +712,10 @@ If sampling reveals **no** common machinery worth hoisting, **don't recommend a 
 
 - **Conditional sections.** Do not include a section if there are no findings. No "✅ No issues found" filler.
 - **Concrete evidence over generic advice.** Cite specific files, line numbers, and percentages. "Mixed parameter style (dry-initializer 64%, kwargs 28%, positional 8%)" beats "establish parameter conventions".
+- **No vague recommendations.** Every recommendation must be specific enough to act on without further interpretation. "Add a CI guard" without showing the rule pattern, "introduce a base class" without surveying the machinery to hoist, "consolidate test frameworks" without naming files — drop these entirely rather than including them. A vague item dilutes the concrete ones around it. If the analysis can't get specific (data missing, scope too large, etc.), say so explicitly instead of waving at it.
+- **Findings vs. recommendations are structurally separated.** Findings (observations: counts, leaks, smells, hub services, dependency facts) live under a single `## Findings` section. Recommendations (concrete next moves) live under `## Recommendations` and `## Top 3 Actions`. The two never share a paragraph. Each recommendation cross-references the finding(s) it rests on.
 - **Don't push placement.** For every cluster, mention both nesting (`app/services/queries/`) and promotion (`app/queries/`); let the user decide.
-- **Recommend the abstraction layer, not the library.** The report says "extract a notification layer", not "use ActiveDelivery". When a concrete library is helpful for illustration, list 2+ alternatives, mark one as the example used to make the suggestion tangible, and end with an explicit prompt: *"Want to learn more about the X approach with library Y?"* The user picks the implementation; the command picks the layer.
+- **Recommend the abstraction layer, not the library.** The report says "extract a notification layer", not "use ActiveDelivery". When a concrete library is helpful for illustration, list 2+ alternatives and mark one as the example used to make the suggestion tangible. The user picks the implementation; the command picks the layer. Sketch-with-X follow-ups go in the **Next Steps** section, not inline in the recommendation.
 - **Tests are first-class evidence.** Every cluster, every recommendation, every convention finding must connect to a test consequence — current pain (slow specs, repeated stubs, layer leakage) and/or future affordance (matchers, shared contexts, focused setup). A recommendation without a test win must be flagged as design-only.
 - **The specification test is the headline diagnostic.** When a spec's contexts describe responsibilities outside its layer, that's the most concrete signal a refactor is justified. Quote actual `describe`/`context` lines as proof.
 - **Shared examples across heterogeneous services are out of scope.** Recommend shared *contexts* and custom matchers tied to specific specializations; never blanket `it_behaves_like "a service"`.
@@ -725,189 +726,214 @@ If sampling reveals **no** common machinery worth hoisting, **don't recommend a 
 - **No bare chapter-number references.** Do not write "per Chapter 5", "Chapter 6's domain services", "the book recommends". Either state the rule directly without attribution, or include the source in "Read more".
 - **No buzzwords without explanation.** "DDD ubiquitous language" → "the name comes from the business glossary". "Specification test" is a defined concept the report uses; that's fine, but explain the first time it appears.
 
-### Required tail: "Read more"
+### Optional tail: "Read more"
 
-Every report ends with a "Read more" section listing the sources behind the rules applied. Format: a short list of links with one-line context. Examples:
+When the report leans on specific external sources to justify rules, include a short "Read more" section listing them. When only general principles were applied, **omit the section entirely** — don't pad with the canonical book + two blog posts as a default.
+
+If included, format as a short list with one-line context per link:
 
 ```markdown
 ## Read more
 
-- *Layered Design for Ruby on Rails Applications* (the book this command is based on) — chapters 5 (Service Objects) and 6 (Query Objects / Domain Services). [Packt](https://www.packtpub.com/...)
-- "Service Objects" — context on the case against service-shaped procedures. [avdi.codes/service-objects](https://avdi.codes/service-objects/)
-- "Rails Service Objects Considered Harmful" — context on the domain-object-first heuristic. [codewithjason.com/rails-service-objects](https://www.codewithjason.com/rails-service-objects/)
+- *Layered Design for Ruby on Rails Applications* — chapters 5 (Service Objects) and 6 (Query Objects / Domain Services). [Packt](https://www.packtpub.com/...)
+- "Service Objects" — case against service-shaped procedures. [avdi.codes/service-objects](https://avdi.codes/service-objects/)
 ```
-
-Only include links that the report actually leaned on. Don't pad.
 
 ## Output Format
 
-The report opens with a **Headline** and **Top 3 Actions**. A reader who reads only the first half-page must walk away knowing what to do. The detailed sections follow for those who want the receipts.
+The report opens with **TL;DR** and **Top 3 Actions**. A reader who reads only the first half-page must walk away knowing what to do. Below them, **Findings** (observations) and **Recommendations** (concrete next moves) live in separate top-level sections — never mixed in the same paragraph. Follow-up prompts go under **Next Steps**, not inline.
 
 ```markdown
 # Service Object Analysis — <project name>
 
-## Headline
-1–2 plain-English sentences. State the diagnosis and the next move. Examples:
-- "Services are well-disciplined; the next move is promoting `pb_slack/messages/` to a delivery layer."
-- "The service folder is a bag of random objects; conventions and specialization both need attention before extraction."
-- "The codebase already has mature decomposition (`forms/`, `queries/`, `policies/`, `deliveries/`); only fine-tuning remains."
+## TL;DR
+
+A single sentence stating the next move — concrete enough that the team could start work on it tomorrow. No prefix ("Monday move:", "Headline:", etc.) — just the statement. Example:
+
+> Extract a delivery layer for `pb_slack/messages/*Formatter` — the single highest-leverage move; closes the layer leak and unlocks per-channel test isolation.
+
+Then a one-paragraph diagnosis: tier verdict, key strengths, key gaps, the forces at play. No actions — state-of-the-world only. Example:
+
+> The codebase has a strong `BaseService` foundation and clean `def call` discipline. The gaps are surface-level: one cluster of 4 formatter services that wants to be a delivery layer, 13 outlier files that break the no-suffix naming convention, and 2 layer-hygiene leaks reading `request`. No structural rewrite needed.
 
 ## Top 3 Actions
 
-Numbered. Each action: one-line *what* + one-line *why* (test win + design win) + effort tag (S/M/L). Recommendations name the **layer**, not the library; library options are listed separately.
+Numbered. Each action: one-line *what* + one-line *why* (test win + design win). Recommendations name the **layer**, not the library; library options are listed separately. Each action cross-references the Findings section it rests on.
 
-1. **[M] Extract a notification / delivery layer for `pb_slack/messages/*Formatter`.**
-   *Why:* 8 specs lose their `Slack::Web::Client` stubs (test win); message-rendering moves out of `app/services/` and tests use channel-isolated matchers (design win).
-   *Library options:* `active_delivery`, `noticed`, or hand-rolled delivery POROs over `ActionMailer` + Slack — pick based on existing dependencies. Want me to sketch this with `active_delivery` (or another)?
-2. **[S] Rename the 13 outlier `*_service.rb` files in `pb_discord/` / `pb_slack/` / `sendgrid/`.**
-   *Why:* removes the only naming-convention deviation; spec file names align too (test win); convention becomes strong everywhere (design win).
-3. **[S] Fix two layer-hygiene leaks (`token_fetcher.rb`, `license_pdf_generator.rb`).**
-   *Why:* specs drop `double('request')` and `params['…']` shapes (test win); presentation parsing returns to the controller (design win).
+1. **Extract a notification / delivery layer for `pb_slack/messages/*Formatter`.**
+   *Why:* 8 specs lose their `Slack::Web::Client` stubs (test win); message-rendering moves out of `app/services/` and tests use channel-isolated matchers (design win). See Findings → Test & Specification, Recommendations → Specialization clusters.
+   *Library options:* `active_delivery`, `noticed`, or hand-rolled delivery POROs over `ActionMailer` + Slack — pick based on existing dependencies. Sketch on request — see Next Steps.
+2. **Rename the 13 outlier `*_service.rb` files in `pb_discord/` / `pb_slack/` / `sendgrid/`.**
+   *Why:* removes the only naming-convention deviation; spec file names align too (test win); convention becomes strong everywhere (design win). See Findings → Conventions.
+3. **Fix two layer-hygiene leaks (`token_fetcher.rb`, `license_pdf_generator.rb`).**
+   *Why:* specs drop `double('request')` and `params['…']` shapes (test win); presentation parsing returns to the controller (design win). See Findings → Layer-Hygiene.
 
 ---
 
-## Verdict (reference panel)
+## Findings
+
+Pure observations about the codebase. No recommendations live in this section — those are gathered under **Recommendations** below. Hub services, fan-in lists, and similar diagnostic data are findings only; they don't require a recommendation to be worth surfacing.
+
+### Verdict
 - Services: N files, L LOC (X% of app/)
 - Architecture tier: **Mature decomposition** | Mixed | **Pre-decomposition** | Waiting room
 - Promoted specializations: forms ✓ | queries ✓ | policies ✓ | deliveries ✗ | presenters ✗
 - Convention strength: Strong | Mixed | Weak ("bag of random objects")
 - Organization: Healthy | Sprawling | Bag of random objects
 - Test convention strength: Strong | Mixed | Weak (spec coverage X%, no shared contexts/matchers, ...)
-- Naming smells: K services flagged (`-er` / tautological / non-domain noun)
+- Naming smells: K services flagged
 - Implicit workflows: J chains of length ≥3
 - Specialization opportunities: K clusters
 - Layer-hygiene issues: M
 - Anemic-model risk: P models
 - Service-like models: Q files
 
-## Waiting Room (only when under threshold)
-N services (X% of app/) — the waiting-room model fits at this size. No service-layer analysis performed; see Model Findings below.
+### Waiting Room (only when under threshold)
+N services (X% of app/) — the waiting-room model fits at this size. No service-layer analysis performed.
 
-## Conventions
+### Conventions
 - Base class: `ApplicationService` — 73% of services
 - Call interface: `.call` 81%, `.perform` 12%, mixed remainder
 - Parameter style: `dry-initializer` 64%, kwargs 28%
-- Naming suffix: 13 / 288 services (4.5%) use `*Service` suffix — **inconsistent** (the codebase has otherwise dropped the suffix). Minority files to rename:
+- Naming suffix: 13 / 288 services (4.5%) use `*Service` suffix — **inconsistent**. Minority files:
   - `app/services/users/auth/token_fetcher_service.rb`
   - `app/services/pb_discord/init_service.rb`
   - … (full list)
 - Naming form: verb-first dominant
 - Return values: plain values 80%, Result objects 15%, exceptions 5%
-- Verdict: Mixed (parameter style fragmented; suffix convention inconsistent)
 
-## Organization
+### Organization
 - 47 top-level files, 12 namespaces (max depth 3)
-- Outliers:
-  - `Billing/` (domain) — 38 files (15% of services); healthy concentration, but worth a sanity check for sub-clusters.
-  - `Utils/` (generic) — 22 files of unrelated logic; rename by domain or split. Smell.
-  - `Processors/` (specialization) — 9 files, all share `process` interface; healthy specialization sub-namespace.
+- `Billing/` (domain) — 38 files (15% of services); healthy concentration.
+- `Utils/` (generic) — 22 files of unrelated logic; bag-of-random-objects sub-symptom.
+- `Processors/` (specialization) — 9 files, all share `process` interface; healthy specialization sub-namespace.
 
-## Specialization Opportunities
+### Layer-Hygiene
 
-### 14 services match `*Query` / `*Finder`
-- Examples: `app/services/users/active_query.rb`, `app/services/posts/published_finder.rb`, …
-- **Current pain (observable):**
-  - `spec/services/users/active_query_spec.rb:12–34` re-creates 5 user fixtures and stubs `Current.organization` to test what is essentially `User.where(active: true).where(organization: org)` — full DB load for what could be a relation assertion.
-  - The same `before { create_list(:user, 5, ...) }` block appears in 9 of the 14 cluster specs — repeated boilerplate.
-- **Specification-test verdict:** specs describe `it "excludes archived" do; expect(call).to match_array([active_user]); end` — "which records are returned" is a query-object responsibility, not a service responsibility.
-- **Test idioms unlocked by promotion:**
-  - Pure relation assertions (`expect(query.relation).to be_a(ActiveRecord::Relation)`, `expect(query.call.to_sql).to include(...)`).
-  - A custom matcher `be_a_query_returning([...])` defined once on the shared base standardizes assertions across all 14 specs without coupling them via a shared example.
-- **Specification clarity after:** the query spec describes the SQL/scope shape it produces — one responsibility, no orchestration noise.
-- **Recommendation:** **extract a query layer.** Possible implementations include hand-rolled POROs over `ActiveRecord::Relation`, the `rubanok` gem for parameter-driven scoping, or `ransack`-backed filter objects — pick based on existing dependencies. The illustration below uses hand-rolled POROs because they introduce no new gem.
-  - **Placement (your call):** nest under `app/services/queries/` (minimal) or promote to `app/queries/` (first-class).
-  - Want me to sketch this with hand-rolled POROs (or with `rubanok`)?
-- Reference: `references/patterns/query-objects.md`.
+**Presentation deps**
+- `app/services/foo/handle_event.rb:12` — accepts `request`
 
-### 8 services match `*Sync` / `*Webhook`
-- These are event handlers / background jobs in disguise.
-- **Current pain:** specs use `perform_enqueued_jobs` and stub Slack + mailer to verify side effects — equivalent to a job spec but routed through a service stack.
+**Current usage (concerning)**
+- `app/services/billing/charge.rb:8` — `Current.user.admin?` in business logic
+
+**Sinkhole services**
+- `app/services/posts/find.rb` — single `Post.find(id)` call
+
+### Implicit Workflows
+
+**Chains of length ≥3**
+- `EmailSender → InvitationCreator → MembershipUpdater` (`app/services/users/invite_team_member.rb` → …)
+
+**Hub services (high fan-in)**
+- `OrganizationService` — called by 11 other services
+- `Assets::UpdateTags.call` — called by 11 services
+
+(Pure findings: high fan-in is data, not a TODO. Inspect for missing domain abstractions before acting.)
+
+### Service-Like Classes in `app/models/`
+Split: domain vs application (purpose test applied).
+
+**Domain-service candidates (in `app/models/`, well-placed)**
+- 23 calculators (`*_calculator.rb`) — pure domain math on AR data.
+- 8 resolvers (`*_resolver.rb`) — pure lookup/strategy.
+
+**Application-service candidates (placed in `app/models/`, but cross layer boundaries)**
+- `app/models/inventory_sync.rb` — defines `.call`, body invokes `WarehouseMailer.update.deliver_later` and `ReindexJob.perform_later`. Crosses into Infrastructure.
+- 5 `*_observer.rb` files in `app/models/event_stream/` — dispatch jobs and notifications.
+
+### Test & Specification
+
+**Coverage and conventions**
+- 213 / 288 services have a corresponding spec (74%). 75 services unspec'd.
+- No reusable test support: no shared *contexts* under `spec/support/`, no custom matchers, no per-cluster setup helpers.
+- Stub-verb distribution: `.to receive(:call)` 412 / `.to receive(:perform)` 38 / `.to receive(:run)` 11.
+
+**Specification-test sweep (representative services)**
+- `app/services/users/auth/token_fetcher_spec.rb` — contexts include `when Authorization header is missing`, `when token is expired`. Both are presentation concerns.
+- `app/services/license_pdf_generator_spec.rb` — contexts include `when params['client_email'] is missing`. Presentation parsing.
+- `app/services/payments/cancel_subscription_spec.rb` — contexts describe `when subscription is active`, `when subscription is past_due`. Domain-rule contexts; belong on the model.
+
+**Test smells**
+- Heavy stubbing of own services: `allow(SomeService).to receive(:call)` without `.with(...)` constraints — 47 occurrences.
+- Repeated mailer/Slack stubs in `pb_slack/`: 11 specs contain the same `allow(Slack::Web::Client)…` block.
+
+### Anemic-Model Risk
+- `Order` — 23 services touch this model, 1 substantive method. Example: `app/services/orders/calculate_total.rb` computes `items.sum(...)`.
+
+---
+
+## Recommendations
+
+Concrete next moves. Each rests on findings above; cross-references included. If a recommendation can't be made specific (e.g., "add a CI guard" without showing the rule pattern), it doesn't appear here — drop it rather than wave at it.
+
+### Specialization clusters
+
+#### `*Query` / `*Finder` cluster (14 services) — extract a query layer
+*Findings cited:* Conventions (no shared base for queries), Test & Specification (repeated `before { create_list(:user, 5) }` in 9 cluster specs).
+
+- **Current pain:** `spec/services/users/active_query_spec.rb:12–34` re-creates 5 user fixtures and stubs `Current.organization` to test what is essentially `User.where(active: true)`. The same `before { create_list(:user, 5, ...) }` block appears in 9 of the 14 cluster specs.
+- **Specification-test verdict:** specs describe `it "excludes archived" do; expect(call).to match_array([active_user]); end` — "which records are returned" is a query-object responsibility.
+- **Test idioms unlocked:** pure relation assertions; a custom matcher `be_a_query_returning([...])` defined once on the shared base standardizes assertions across all 14 specs.
+- **Specification clarity after:** the query spec describes the SQL/scope shape it produces — one responsibility.
+- **Recommendation:** extract a query layer. Implementations: hand-rolled POROs over `ActiveRecord::Relation`, the `rubanok` gem for parameter-driven scoping, or `ransack`-backed filter objects.
+- **Placement (your call):** nest under `app/services/queries/` (minimal) or promote to `app/queries/` (first-class).
+
+#### `*Sync` / `*Webhook` cluster (8 services) — extract a background-processing / event-handling layer
+*Findings cited:* Test & Specification (specs use `perform_enqueued_jobs` and stub Slack + mailer).
+
+- **Current pain:** specs stub Slack + mailer to verify side effects — equivalent to a job spec but routed through a service stack.
 - **Specification-test verdict:** contexts read `'when payload has new commits'` / `'when payload is malformed'` — those are job-handling contexts.
 - **Test idioms unlocked:** `have_enqueued_job(...)` matchers; retry/backoff specs at job level.
-- **Recommendation:** **extract a background-processing / event-handling layer.** Implementations include `ActiveJob` with `active_job-performs` for thin job wrappers, plain `Sidekiq::Worker` classes, or `karafka` for a true event bus — pick based on existing infrastructure.
-  - Want me to sketch this with `active_job-performs` (or another option)?
-- Reference: `references/anti-patterns.md` (anemic jobs).
+- **Recommendation:** extract a background-processing / event-handling layer. Implementations: `ActiveJob` with `active_job-performs` for thin job wrappers, plain `Sidekiq::Worker` classes, or `karafka` for a true event bus.
+- **Placement:** nest under `app/services/handlers/` or promote to `app/jobs/<concept>/`.
 
-## Naming Smells & Alternative Forms
+### Naming refactors
 
-### `-er` suffix candidates (5)
+**`-er` suffix candidates (5)**
 - `app/services/billing/charge_processor.rb`, `…/email_sender.rb`, …
-- These names signal procedure-carriers. Inspect each for the next two sub-checks.
+- These names signal procedure-carriers. Inspect each for the next two checks.
 
-### Tautological method/class pair (2)
-- `app/services/ipn_processor.rb` — `IpnProcessor#process_ipn`. Class adds nothing the method couldn't on its own; inline as a module function or a method on the model the IPN affects.
+**Tautological method/class pair (2)**
+- `app/services/ipn_processor.rb` — `IpnProcessor#process_ipn`. Inline as a module function or a method on the model the IPN affects.
 - `app/services/report_generator.rb` — `ReportGenerator#generate_report`. Same pattern.
 
-### Domain-method candidates (3)
-- `app/services/orders/calculate_total.rb` — body is `order.items.sum(&:subtotal)`. **No cross-layer calls.** **Move to `Order#total`.**
-- `app/services/users/anonymize.rb` — body updates `user` attributes only. **Move to `User#anonymize!`.**
-- `app/services/posts/publish_with_notification.rb` — body sets `published_at` *and* calls `PostMailer`. **Layered split:** keep the mailer call here; move `published_at` setting to `Post#publish!`.
+**Domain-method candidates (3)**
+- `app/services/orders/calculate_total.rb` — body is `order.items.sum(&:subtotal)`. **No cross-layer calls.** Move to `Order#total`.
+- `app/services/users/anonymize.rb` — body updates `user` attributes only. Move to `User#anonymize!`.
+- `app/services/posts/publish_with_notification.rb` — body sets `published_at` *and* calls `PostMailer`. Layered split: keep the mailer call here; move `published_at` setting to `Post#publish!`.
 
-### Module-function candidates (4)
+**Module-function candidates (4)**
 - `app/services/string_humanizer.rb` — pure string transform, single layer (Domain). Move to `app/lib/strings/humanize.rb`.
-- `app/services/markdown/safe_render.rb` — Presentation-only, no domain. Move to `app/helpers/markdown_helper.rb`.
-- (2 more.)
+- `app/services/markdown/safe_render.rb` — Presentation-only. Move to `app/helpers/markdown_helper.rb`.
 
 These are *suggestions*; teams committed to `.call` everywhere may keep them as classes.
 
-## Implicit Workflows
+### Domain-service shaping (in `app/models/`)
+*Findings cited:* Service-Like Classes / Domain-service candidates.
 
-### Chains of length ≥3
-- `EmailSender → InvitationCreator → MembershipUpdater` (`app/services/users/invite_team_member.rb` → …) — workflow has no name. Recommendation: introduce `AcceptInvitation` as an `ApplicationOperation` (or form) that owns the steps. **Test win:** the workflow's spec describes the steps once; the chain stops being implicit.
+- 23 calculators (`*_calculator.rb`) — introduce `ApplicationCalculator` hoisting `memoize :value` and a logger helper. Place at `app/models/<model>/<name>_calculator.rb` or a dedicated `app/calculators/` if reused across models.
+- 8 resolvers (`*_resolver.rb`) — introduce `ApplicationResolver`, or fold into `ApplicationQuery` if they all return relations.
 
-### Hub services
-- `OrganizationService` — called by 11 other services. Inspect for missing domain abstraction; likely several methods belong on `Organization` or split into specialized services.
+### Application-service extraction (out of `app/models/`)
+*Findings cited:* Service-Like Classes / Application-service candidates.
 
-## Layer-Hygiene Issues
-### Presentation deps
-- `app/services/foo/handle_event.rb:12` — accepts `request`
-### Current usage (concerning)
-- `app/services/billing/charge.rb:8` — `Current.user.admin?` in business logic
-### Sinkhole services
-- `app/services/posts/find.rb` — single `Post.find(id)` call
+- Introduce `ApplicationService` with a shared transaction wrapper and `fail_with!` helper — the 11 candidates re-implement these patterns 4 different ways today. Migrate the application candidates after the base class exists.
 
-## Anemic-Model Risk
-- `Order` — 23 services touch this model, 1 substantive method.
-  Example: `app/services/orders/calculate_total.rb` computes `items.sum(...)` — domain logic that should live in `Order#total`.
+### Other recommendations
 
-## Service-Like Classes in `app/models/`
+- **Establish a single return-value convention.** Currently plain values (80%) coexist with `Result` objects (15%). Pick one. *Test win:* `expect(result).to be_success` becomes uniform across callers.
+- **Restore `Order` domain methods.** 23 services touch `Order` while the model has 1 substantive method. Move `items.sum`-style logic onto `Order`. *Test win:* duplicated rule coverage between `Order_spec` and `*OrderService_spec` collapses.
 
-### Domain-service candidates (stay in `app/models/`, add specialization)
-- 23 calculators (`*_calculator.rb`) — pure domain math on AR data. Recommend: `ApplicationCalculator` base class hoisting `memoize :value` and a logger helper. Place either at `app/models/<model>/<name>_calculator.rb` or a dedicated `app/calculators/` if reused across models.
-- 8 resolvers (`*_resolver.rb`) — pure lookup/strategy. Recommend: `ApplicationResolver` (or fold into `ApplicationQuery` if they all return relations).
+---
 
-### Application-service candidates (move to `app/services/`)
-- `app/models/inventory_sync.rb` — defines `.call`, body invokes `WarehouseMailer.update.deliver_later` and `ReindexJob.perform_later`. Crosses into Infrastructure.
-- 5 `*_observer.rb` files in `app/models/event_stream/` — dispatch jobs and notifications. Application.
-- Recommend: introduce `ApplicationService` with shared transaction wrapper + `fail_with!` (the candidates re-implement these patterns 4 different ways today). Migrate the 11 application candidates after the base class exists.
+## Next Steps
 
-## Testing & Specification
+Follow-up prompts you can run when ready to dig deeper. Include only items that follow from actual findings or recommendations above — don't pad.
 
-### Coverage and conventions
-- 213 / 288 services have a corresponding spec (74%). 75 services unspec'd — no immediate refactor signal but worth listing.
-- No reusable test support: no shared *contexts* under `spec/support/`, no custom matchers, no per-cluster setup helpers — every spec rolls its own `before` blocks. (Do **not** add shared examples across heterogeneous services; the right move is shared contexts and matchers tied to specific specializations once those exist.)
-- Stub-verb distribution: `.to receive(:call)` 412 / `.to receive(:perform)` 38 / `.to receive(:run)` 11 — caller specs reflect the same minor inconsistency as the implementation; converging on `.call` simplifies stubbing site-wide.
-
-### Specification-test sweep (representative services)
-- `app/services/users/auth/token_fetcher_spec.rb` — contexts include `when Authorization header is missing`, `when token is expired`. **Both are presentation concerns** (header parsing, request handling) — should live in a controller / request spec. Service spec is doing HTTP work.
-- `app/services/license_pdf_generator_spec.rb` — contexts include `when params['client_email'] is missing`, `when params['start_date'] is invalid`. Same diagnosis: presentation parsing.
-- `app/services/payments/cancel_subscription_spec.rb` — contexts describe `when subscription is active`, `when subscription is past_due`. Domain-rule contexts; the rules belong in `Subscription#cancellable?` with the spec moving to the model.
-
-### Test smells across the codebase
-- **Heavy stubbing of own services**: `allow(SomeService).to receive(:call)` without `.with(...)` constraints — 47 occurrences. Indicates services accept too many implicit inputs.
-- **Repeated mailer/Slack stubs in `pb_slack/`**: 11 specs contain the same `allow(Slack::Web::Client)…` block. Promotion to `app/deliveries/` with `ApplicationSlackNotifier` would replace this with `have_delivered_to` matchers.
-
-## Recommended Next Steps
-1. Promote the 14-strong `*Query`/`*Finder` cluster to a dedicated abstraction with `ApplicationQuery` and a custom `be_a_query_returning(...)` matcher. **Test win:** removes 14 controller-stack tests; ~9 specs lose `before { create_list(:user, 5) }` setup; the matcher standardizes assertions without coupling specs via shared examples.
-2. Establish a single return-value convention. **Test win:** `expect(result).to be_success` becomes uniform across callers.
-3. Restore `Order` domain methods; remove anemic services that just compute on its fields. **Test win:** the duplicated rule coverage between `Order_spec` and `*OrderService_spec` collapses.
-4. Move 3 service-like models out of `app/models/`. **Test win:** model specs lose orchestration scaffolding (mailer/job stubs); the new service specs describe one operation.
-5. Fix the two layer-hygiene leaks. **Test win:** `token_fetcher_spec.rb` and `license_pdf_generator_spec.rb` lose request/params doubles; specs run as POROs.
-
-## Read more
-- *Layered Design for Ruby on Rails Applications* — Service Objects and Query Objects / Domain Services chapters. [Packt](https://www.packtpub.com/en-us/product/layered-design-for-ruby-on-rails-applications-9781806114221)
-- "Service Objects" — case against service-shaped procedures, junk-drawer effect. [avdi.codes/service-objects](https://avdi.codes/service-objects/)
-- "Rails Service Objects Considered Harmful" — domain-object-first heuristic; the `-er` smell. [codewithjason.com/rails-service-objects](https://www.codewithjason.com/rails-service-objects/)
+- **Sketch `ApplicationService`** based on the surveyed machinery (shared transaction wrapper, `fail_with!`, instrumentation hooks). Run: *"Sketch ApplicationService for the application-layer candidates."*
+- **Compare query-layer libraries** for the 14 `*Query`/`*Finder` cluster — hand-rolled POROs vs `rubanok` vs `ransack`-backed objects. Run: *"Sketch the query layer with rubanok"* (or another).
+- **Compare delivery-layer libraries** for the `pb_slack/messages/*Formatter` cluster. Run: *"Sketch the delivery layer with active_delivery."*
+- **Drill into the `Order` anemic model.** Run `/layered-rails:analyze-gods app/models/order.rb` (yes, the anemic case is also a target — most "anemic" models hide either domain logic in services or god behavior elsewhere).
 ```
 
 ## Related
