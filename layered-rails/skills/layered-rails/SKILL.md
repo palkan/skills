@@ -92,6 +92,7 @@ See [Specification Test Reference](references/core/specification-test.md) for de
 | Serializer | Presentation | API response formatting | [serializers.md](references/patterns/serializers.md) |
 | Policy Object | Application | Authorization decisions | [policy-objects.md](references/patterns/policy-objects.md) |
 | Value Object | Domain | Immutable, identity-less concepts | [value-objects.md](references/patterns/value-objects.md) |
+| Collaborator Object | Domain | A slice of one model's behavior in a typed delegate | [collaborator-objects.md](references/patterns/collaborator-objects.md) |
 | State Machine | Domain | States, events, transitions | [state-machines.md](references/patterns/state-machines.md) |
 | Concern | Domain | Shared behavioral extraction | [concerns.md](references/patterns/concerns.md) |
 
