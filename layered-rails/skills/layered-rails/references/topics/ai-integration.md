@@ -358,8 +358,3 @@ class ArticlesController < ApplicationController
   end
 end
 ```
-
-## Related
-
-- [Active Agent Gem](../gems/active-agent.md)
-- [Service Objects Pattern](../patterns/service-objects.md)

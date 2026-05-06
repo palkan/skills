@@ -231,8 +231,3 @@ RSpec.describe PostsProcessor do
   end
 end
 ```
-
-## Related
-
-- [Filter Objects Pattern](../patterns/filter-objects.md)
-- [Query Objects Pattern](../patterns/query-objects.md)

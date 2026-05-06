@@ -210,8 +210,3 @@ RSpec.describe UserAvatarComponent, type: :component do
   end
 end
 ```
-
-## Related
-
-- [View Components Topic](../topics/view-components.md)
-- [Presenters Pattern](../patterns/presenters.md)

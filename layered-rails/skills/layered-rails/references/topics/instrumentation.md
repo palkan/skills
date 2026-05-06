@@ -371,8 +371,3 @@ ActiveSupport::Notifications.subscribe("sql.active_record") do |event|
   # Process event
 end
 ```
-
-## Related
-
-- [Callbacks Topic](./callbacks.md)
-- [Configuration Topic](./configuration.md)

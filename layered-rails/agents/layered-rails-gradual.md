@@ -200,7 +200,7 @@ class MessagePolicy < ApplicationPolicy
 end
 ```
 
-**Pattern:** [Policy Objects](../references/patterns/policy-objects.md)
+**Pattern:** [Policy Objects](../skills/layered-rails/references/patterns/policy-objects.md)
 **Scenario:** [Extract Authorization to Policy](../skills/layered-rails/examples/authorization-to-policy.md)
 
 ### Change 2: ...

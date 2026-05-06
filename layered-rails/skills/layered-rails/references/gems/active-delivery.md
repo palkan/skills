@@ -208,7 +208,3 @@ end
 # config/environments/development.rb
 config.active_delivery.deliver_later_queue_adapter = :inline
 ```
-
-## Related
-
-- [Notifications Topic](../topics/notifications.md)

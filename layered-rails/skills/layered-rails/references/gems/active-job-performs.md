@@ -158,8 +158,3 @@ Keep separate job classes when:
 ## Layer Placement
 
 The `performs` declaration belongs in the **Domain Layer** (model), keeping the async execution detail close to the domain logic it executes.
-
-## Related
-
-- [Callbacks Topic](../topics/callbacks.md) - When to use callbacks vs explicit `_later` calls
-- [Service Objects](../patterns/service-objects.md) - For complex multi-step operations

@@ -277,7 +277,7 @@ end
 
 ## Related
 
-- [Extraction Signals](/skill/references/core/extraction-signals.md)
-- [Service Objects Pattern](/skill/references/patterns/service-objects.md)
-- [Concerns Pattern](/skill/references/patterns/concerns.md)
-- [Value Objects Pattern](/skill/references/patterns/value-objects.md)
+- [Extraction Signals](../skills/layered-rails/references/core/extraction-signals.md)
+- [Service Objects Pattern](../skills/layered-rails/references/patterns/service-objects.md)
+- [Concerns Pattern](../skills/layered-rails/references/patterns/concerns.md)
+- [Value Objects Pattern](../skills/layered-rails/references/patterns/value-objects.md)

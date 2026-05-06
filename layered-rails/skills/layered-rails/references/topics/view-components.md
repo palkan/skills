@@ -438,8 +438,3 @@ app/components/
     ├── avatar_component.rb
     └── profile_card_component.rb
 ```
-
-## Related
-
-- [ViewComponent Gem](../gems/view-component.md)
-- [Presenters Pattern](../patterns/presenters.md)

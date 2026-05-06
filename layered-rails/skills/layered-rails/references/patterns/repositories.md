@@ -2,27 +2,34 @@
 
 ## Summary
 
-Repositories encapsulate complex data access patterns, providing a clean interface between domain logic and persistence. In Rails, they complement Active Record rather than replacing it, handling cross-model queries and external data sources.
+Repositories are a **last-resort** data-access pattern in Rails. Prefer simpler tools first:
+
+1. **Active Record class methods / scopes** — for single-model queries and simple filters.
+2. **Query objects** — for composable, parameterized query building across one or more models.
+3. **Repositories** — only when you need to return **custom domain objects** mapped from Active Record data, decoupled from the AR schema.
+
+The repository's value is the *mapping boundary*: callers receive plain Ruby objects (`Data`, `Struct`, POROs) with stable shapes, not AR records. If you're returning AR records as-is, you don't need a repository — a scope or query object will do.
 
 ## When to Use
 
-- Complex queries spanning multiple models
-- Data aggregation from multiple sources
-- External data source integration
-- Caching layers for expensive queries
-- Read model optimization (CQRS-lite)
+- Returning **custom domain objects** mapped from AR data (the primary case)
+- Complex multi-model reads where the result shape differs from any AR model
+- Aggregation from multiple sources (DB + cache + external API) into a unified domain object
+- Read-model optimization (CQRS-lite) where the read shape diverges from the write model
 
 ## When NOT to Use
 
-- Simple single-model queries (use scopes)
-- CRUD operations (use Active Record directly)
-- Before query complexity justifies abstraction
+- Simple single-model queries → use scopes / class methods
+- Composable, parameterized queries → use query objects
+- CRUD operations → use Active Record directly
+- Returning AR records as-is → just expose them via scopes (no mapping = no repository)
+- Before mapping needs justify the abstraction
 
 ## Key Principles
 
-- **Complement Active Record** — don't fight Rails conventions
-- **Encapsulate complexity** — hide multi-model joins and aggregations
-- **Return domain objects** — not raw hashes or database results
+- **Mapping is the point** — every method returns a domain object, not an AR record
+- **Complement Active Record** — don't fight Rails conventions; build on top
+- **Encapsulate complexity** — hide multi-model joins, aggregations, external lookups
 - **Single responsibility** — one repository per aggregate or read concern
 
 ## Implementation

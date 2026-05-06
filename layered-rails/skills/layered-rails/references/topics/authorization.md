@@ -385,8 +385,3 @@ end
 # In view
 <% if @editable_ids.include?(post.id) %>
 ```
-
-## Related
-
-- [Policy Objects Pattern](../patterns/policy-objects.md)
-- [Action Policy Gem](../gems/action-policy.md)

@@ -420,8 +420,3 @@ class WebhooksControllerTest < ActionDispatch::IntegrationTest
   end
 end
 ```
-
-## Related
-
-- [Policy Objects Pattern](../patterns/policy-objects.md)
-- [Authorization Topic](../topics/authorization.md)

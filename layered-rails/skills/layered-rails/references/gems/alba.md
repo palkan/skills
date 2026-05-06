@@ -241,7 +241,3 @@ RSpec.describe UserSerializer do
   end
 end
 ```
-
-## Related
-
-- [Serializers Pattern](../patterns/serializers.md)

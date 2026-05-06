@@ -197,7 +197,26 @@ NotifyPostPublished.new(post).call
 
 When notifications are tied to state transitions, standalone workflows are an ideal place to trigger them via `after_transition` callbacks. This keeps models free of notification logic while centralizing state-related side effects.
 
-See [Triggering Deliveries from Workflows](../patterns/state-machines.md#triggering-deliveries-from-workflows) for implementation details.
+```ruby
+class Cable::ProvisionWorkflow < ApplicationWorkflow
+  param :cable
+
+  workflow do
+    state :pending  do; event :create, transitions_to: :creating; end
+    state :creating do; event :created, transitions_to: :created; event :error, transitions_to: :failed; end
+    state :created
+    state :failed
+  end
+
+  after_transition(if: :created?) do
+    CableDelivery.with(cable:).provisioned.deliver_later
+  end
+
+  after_transition(if: :failed?) do
+    Admin::CableDelivery.with(cable:).provision_failed.deliver_later
+  end
+end
+```
 
 ## Anti-Patterns
 
@@ -341,8 +360,3 @@ class DatabaseNotifier < AbstractNotifier::Base
   end
 end
 ```
-
-## Related
-
-- [Active Delivery Gem](../gems/active-delivery.md)
-- [Callbacks Topic](./callbacks.md)

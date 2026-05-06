@@ -237,7 +237,7 @@ For each concern, verify:
 
 ### 7. Anti-Pattern Detection
 
-Check for common anti-patterns (see [Anti-Patterns Reference](../skills/layered-rails/references/anti-patterns.md)):
+Check for common anti-patterns (see the [Anti-Patterns index](../skills/layered-rails/SKILL.md#common-violations) in SKILL.md for the full category list):
 
 **Anemic Jobs**
 ```bash
@@ -346,7 +346,7 @@ Omit any bullet whose finding is zero. Skip the entire section only when `app/se
 | Anemic Job | `NotifyRecipientsJob` | Use `performs` gem |
 | Helper HTML | `messages_helper.rb` | Extract to ViewComponent |
 
-See [Anti-Patterns Reference](../skills/layered-rails/references/anti-patterns.md) for details.
+See the [Anti-Patterns index](../skills/layered-rails/SKILL.md#common-violations) in SKILL.md for the per-category references.
 
 ## Pattern Recommendations
 

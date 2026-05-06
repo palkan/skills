@@ -260,8 +260,3 @@ class AIService
   end
 end
 ```
-
-## Related
-
-- [AI Integration Topic](../topics/ai-integration.md)
-- [Service Objects Pattern](../patterns/service-objects.md)

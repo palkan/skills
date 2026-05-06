@@ -40,6 +40,8 @@ Rails applications are organized into four architecture layers with **unidirecti
 
 **Core Rule:** Lower layers must never depend on higher layers.
 
+See [Architecture Layers Reference](references/core/architecture-layers.md) for the full layer responsibilities and the Four Rules deep-dive.
+
 ## What Would You Like To Do?
 
 1. **Analyze codebase** - Run `/layers:analyze` for full analysis or `/layers:analyze:services`, `/layers:analyze:callbacks`, `/layers:analyze:gods` for specific checks
@@ -103,6 +105,7 @@ See [Specification Test Reference](references/core/specification-test.md) for de
 | Collaborator Object | Domain | A slice of one model's behavior in a typed delegate | [collaborator-objects.md](references/patterns/collaborator-objects.md) |
 | State Machine | Domain | States, events, transitions | [state-machines.md](references/patterns/state-machines.md) |
 | Concern | Domain | Shared behavioral extraction | [concerns.md](references/patterns/concerns.md) |
+| Repository | Application | **Last resort** — returning custom domain objects mapped from AR data, after AR scopes (simple) and query objects (query building) are insufficient | [repositories.md](references/patterns/repositories.md) |
 
 ### Pattern Selection Guide
 

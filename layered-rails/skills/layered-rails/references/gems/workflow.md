@@ -291,7 +291,3 @@ RSpec.describe Post do
   end
 end
 ```
-
-## Related
-
-- [State Machines Pattern](../patterns/state-machines.md)

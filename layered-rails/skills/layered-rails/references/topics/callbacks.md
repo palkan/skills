@@ -323,8 +323,3 @@ RSpec.describe CreateUser do
   end
 end
 ```
-
-## Related
-
-- [Service Objects Pattern](../patterns/service-objects.md)
-- [Extraction Signals](../core/extraction-signals.md)

@@ -197,9 +197,3 @@ If the delegate has no behavior of its own, it is paperwork. Either inline the m
 ### Delegate That Knows About Callers
 
 A collaborator should not branch on who called it (`if controller_context.user.admin?`). It owns a slice of one model's behavior; cross-cutting context belongs in the calling layer.
-
-## Related Patterns
-
-- **[Value Objects](value-objects.md)** — for inert data bundles without behavior.
-- **[Service Objects](service-objects.md)** — for units of work that orchestrate across the application.
-- **[Concerns](concerns.md)** — for reusable behavior across heterogeneous models, when a typed delegate would be overkill.

@@ -293,7 +293,3 @@ end
 | Explicit | Clear dependencies, easy testing | More verbose, must pass through layers |
 
 **Recommendation**: Default to explicit parameters. Use Current only for cross-cutting infrastructure concerns (logging, audit, time zone).
-
-## Related
-
-- [Anti-Patterns: Current in Models](../anti-patterns.md#current-in-models)

@@ -254,6 +254,6 @@ end
 
 ## Related
 
-- [Callbacks Topic](/skill/references/topics/callbacks.md)
-- [Service Objects Pattern](/skill/references/patterns/service-objects.md)
-- [Extraction Signals](/skill/references/core/extraction-signals.md)
+- [Callbacks Topic](../skills/layered-rails/references/topics/callbacks.md)
+- [Service Objects Pattern](../skills/layered-rails/references/patterns/service-objects.md)
+- [Extraction Signals](../skills/layered-rails/references/core/extraction-signals.md)

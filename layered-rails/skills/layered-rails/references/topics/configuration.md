@@ -369,7 +369,3 @@ config/
 # 3. config/stripe.yml[environment]
 # 4. attr_config default value
 ```
-
-## Related
-
-- [Anyway Config Gem](../gems/anyway-config.md)

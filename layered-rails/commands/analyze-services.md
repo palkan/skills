@@ -1374,7 +1374,7 @@ Follow-up prompts you can run when ready to dig deeper. Include only items that 
 - [Query Objects Pattern](../skills/layered-rails/references/patterns/query-objects.md)
 - [Value Objects Pattern](../skills/layered-rails/references/patterns/value-objects.md)
 - [Collaborator / Delegate Objects Pattern](../skills/layered-rails/references/patterns/collaborator-objects.md)
-- [Anti-Patterns: Bag of Random Objects, Anemic Models, Premature Abstraction](../skills/layered-rails/references/anti-patterns.md)
+- [Anti-Patterns: Bag of Random Objects, Anemic Models, Premature Abstraction](../skills/layered-rails/references/anti-patterns/service-objects.md)
 - [Specification Test](../skills/layered-rails/references/core/specification-test.md)
 - [Current Attributes](../skills/layered-rails/references/topics/current-attributes.md)
 - [`/layered-rails:analyze`](./analyze.md) — full codebase architecture analysis

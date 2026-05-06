@@ -197,7 +197,3 @@ class SecretsConfig < ApplicationConfig
   end
 end
 ```
-
-## Related
-
-- [Configuration Topic](../topics/configuration.md)
