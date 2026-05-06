@@ -1,0 +1,14 @@
+# Lefthook configuration — https://lefthook.dev
+#
+# Install lefthook (https://lefthook.dev/installation/), then run once:
+#
+#     lefthook install
+#
+# After that, the hooks below run automatically on the matching git events.
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: lint-skills
+      glob: "*.md"
+      run: python3 scripts/lint-skills.py

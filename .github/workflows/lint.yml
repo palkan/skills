@@ -1,0 +1,19 @@
+name: Lint
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  lint-skills:
+    name: Skill best-practices
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          # Need history for --changed-only diff and for plugin.links-exist to resolve git refs.
+          fetch-depth: 0
+
+      - name: Lint SKILL.md and plugin files
+        run: python3 scripts/lint-skills.py

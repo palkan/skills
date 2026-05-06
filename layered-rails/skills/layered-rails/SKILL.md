@@ -1,6 +1,6 @@
 ---
 name: layered-rails
-description: Design and review Rails applications using layered architecture principles from "Layered Design for Ruby on Rails Applications". Use when analyzing Rails codebases, reviewing PRs for architecture violations, planning feature implementations, or implementing patterns like authorization, view components, or AI integration. Triggers on "layered design", "architecture layers", "abstraction", "specification test", "layer violation", "extract service", "fat controller", "god object".
+description: Design and review Rails applications using layered architecture principles from "Layered Design for Ruby on Rails Applications". Use when analyzing Rails codebases, reviewing PRs for architecture violations, planning feature implementations, or implementing patterns like authorization, view components, or AI integration. Triggers on "layered design", "architecture layers", "abstraction", "refactor","specification test", "layer violation", "extract service", "fat controller", "god object".
 allowed-tools:
   - Grep
   - Glob
