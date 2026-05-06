@@ -1,4 +1,4 @@
-# /layers:analyze-callbacks
+# /layered-rails:analyze-callbacks
 
 Deep analysis of Active Record callbacks in the codebase.
 
@@ -9,7 +9,7 @@ Audit callbacks using the scoring system, identifying candidates for extraction 
 ## Usage
 
 ```
-/layers:analyze-callbacks [path]
+/layered-rails:analyze-callbacks [path]
 ```
 
 - Without path: Analyzes all models in `app/models/`

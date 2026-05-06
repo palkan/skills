@@ -1,4 +1,4 @@
-# /layers:analyze
+# /layered-rails:analyze
 
 Comprehensive layered architecture analysis of a Rails codebase or specific directory.
 
@@ -14,7 +14,7 @@ Evaluate how well the codebase follows layered architecture principles, identify
 ## Usage
 
 ```
-/layers:analyze [path]
+/layered-rails:analyze [path]
 ```
 
 - Without path: Analyzes entire `app/` directory
@@ -383,8 +383,8 @@ See the [Anti-Patterns index](../skills/layered-rails/SKILL.md#common-violations
 
 ## Related Commands
 
-- `/layers:analyze-services` - **Full** audit of `app/services/` (per-cluster proposal blocks, contracts, test wins, placement options) — the deep version of the Service Layer Brief embedded above
-- `/layers:analyze-callbacks` - Deep callback analysis
-- `/layers:analyze-gods` - Detailed god object analysis
-- `/layers:spec-test` - Apply specification test to specific code
-- `/layers:review` - Review specific changes
+- `/layered-rails:analyze-services` - **Full** audit of `app/services/` (per-cluster proposal blocks, contracts, test wins, placement options) — the deep version of the Service Layer Brief embedded above
+- `/layered-rails:analyze-callbacks` - Deep callback analysis
+- `/layered-rails:analyze-gods` - Detailed god object analysis
+- `/layered-rails:spec-test` - Apply specification test to specific code
+- `/layered-rails:review` - Review specific changes

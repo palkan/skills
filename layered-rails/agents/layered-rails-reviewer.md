@@ -263,5 +263,5 @@ The order completion flow has a critical layer violation (Current in model) that
 This reviewer integrates with compound-engineering workflows:
 
 - Invoked during `/review` as part of review agent pool
-- Can be run standalone via `/layers:review`
+- Can be run standalone via `/layered-rails:review`
 - Provides layered architecture perspective alongside other reviewers

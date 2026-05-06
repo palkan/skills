@@ -227,7 +227,7 @@ end
 
 ## Next Steps
 
-1. Run `/layers:review` after implementing each phase
+1. Run `/layered-rails:review` after implementing each phase
 2. Add tests for new abstractions before refactoring
 3. Consider [specific gem] for [specific pattern]
 ```

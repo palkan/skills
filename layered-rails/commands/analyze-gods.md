@@ -1,4 +1,4 @@
-# /layers:analyze-gods
+# /layered-rails:analyze-gods
 
 Identify and analyze god objects in the codebase using churn × complexity metrics.
 
@@ -9,7 +9,7 @@ Find models that have grown too large and complex, then provide actionable recom
 ## Usage
 
 ```
-/layers:analyze-gods [threshold]
+/layered-rails:analyze-gods [threshold]
 ```
 
 - Without threshold: Uses default (250 lines)

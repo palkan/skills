@@ -21,8 +21,8 @@ Agentic guidance for developing skills in this repo. Skills _usage_ lives in eac
 ```
 ## master
 
-- Added `/layers:foo` command to <one-line purpose>.
-- Renamed `/layers:bar` → `/layers:baz` (and agent `<old>` → `<new>`).
+- Added `/layered-rails:foo` command to <one-line purpose>.
+- Renamed `/layered-rails:bar` → `/layered-rails:baz` (and agent `<old>` → `<new>`).
 ```
 
 Skip dev/tooling-only changes (lint scripts, CI workflows, hooks, internal refactors of scripts). Only user-visible plugin changes belong here.
@@ -85,7 +85,7 @@ Release flow:
 ## Authoring conventions
 
 - **Description triggers** — list both concept terms ("layered design", "fat controller") and concrete pattern names users actually type ("service object", "form object", "policy object"). Both are needed for routing.
-- **Agent naming** — use the `-er` / `-or` suffix to match existing convention (e.g., `layered-rails-reviewer`, `layered-rails-planner`). Command files use the bare verb (e.g., `commands/plan.md` for `/layers:plan`).
+- **Agent naming** — use the `-er` / `-or` suffix to match existing convention (e.g., `layered-rails-reviewer`, `layered-rails-planner`). Command files use the bare verb (e.g., `commands/plan.md` for `/layered-rails:plan`).
 - **Agent frontmatter** — only `name:` and `description:`. No `model:` attribute (removed for harness compatibility; let consumers pick).
 - **Commands launch agents by `name:`**, not file path. Keep both in sync if you rename one.
 - **Reference structure** — group references by kind (`core/`, `patterns/`, `anti-patterns/`, `topics/`, `gems/`, `examples/`). New references go under the matching kind; create a new kind only if no existing one fits.

@@ -1,4 +1,4 @@
-# /layers:spec-test
+# /layered-rails:spec-test
 
 Run the specification test on files to evaluate layer responsibility alignment.
 
@@ -7,9 +7,9 @@ The specification test works by generating a **test skeleton** — the describe/
 ## Usage
 
 ```
-/layers:spec-test [file_path]
-/layers:spec-test app/controllers/orders_controller.rb
-/layers:spec-test app/services/
+/layered-rails:spec-test [file_path]
+/layered-rails:spec-test app/controllers/orders_controller.rb
+/layered-rails:spec-test app/services/
 ```
 
 ## Process

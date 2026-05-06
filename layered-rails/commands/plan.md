@@ -1,29 +1,29 @@
-# /layers:plan
+# /layered-rails:plan
 
 Plan gradual adoption of layered architecture patterns.
 
 ## Usage
 
 ```
-/layers:plan [goal]
+/layered-rails:plan [goal]
 ```
 
-- `/layers:plan` - Full layerification roadmap
-- `/layers:plan introduce authorization` - Focus on policies
-- `/layers:plan refactor fat controllers` - Focus on extracting to forms/services
-- `/layers:plan extract callbacks from User model` - Specific model focus
-- `/layers:plan reduce god objects` - Focus on model decomposition
+- `/layered-rails:plan` - Full layerification roadmap
+- `/layered-rails:plan introduce authorization` - Focus on policies
+- `/layered-rails:plan refactor fat controllers` - Focus on extracting to forms/services
+- `/layered-rails:plan extract callbacks from User model` - Specific model focus
+- `/layered-rails:plan reduce god objects` - Focus on model decomposition
 
 Launches the `layered-rails-planner` agent with the specified goal.
 
 ## Examples
 
 ```
-/layers:plan
-/layers:plan introduce proper authorization using Action Policy
-/layers:plan move notifications out of models
-/layers:plan extract complex form handling
-/layers:plan refactor Order model callbacks
+/layered-rails:plan
+/layered-rails:plan introduce proper authorization using Action Policy
+/layered-rails:plan move notifications out of models
+/layered-rails:plan extract complex form handling
+/layered-rails:plan refactor Order model callbacks
 ```
 
 ## What It Does
@@ -46,5 +46,5 @@ A phased roadmap with:
 
 ## Related
 
-- `/layers:analyze` - Full codebase analysis (run first for context)
-- `/layers:review` - Review specific changes after implementing phases
+- `/layered-rails:analyze` - Full codebase analysis (run first for context)
+- `/layered-rails:review` - Review specific changes after implementing phases

@@ -1,14 +1,14 @@
-# /layers:review
+# /layered-rails:review
 
 Standalone code review from layered architecture perspective.
 
 ## Usage
 
 ```
-/layers:review                    # Review uncommitted changes
-/layers:review [file_path]        # Review specific file
-/layers:review --staged           # Review staged changes
-/layers:review --branch main      # Review changes vs branch
+/layered-rails:review                    # Review uncommitted changes
+/layered-rails:review [file_path]        # Review specific file
+/layered-rails:review --staged           # Review staged changes
+/layered-rails:review --branch main      # Review changes vs branch
 ```
 
 ## Process

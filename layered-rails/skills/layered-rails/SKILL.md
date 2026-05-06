@@ -44,10 +44,10 @@ See [Architecture Layers Reference](references/core/architecture-layers.md) for 
 
 ## What Would You Like To Do?
 
-1. **Analyze codebase** - Run `/layers:analyze` for full analysis or `/layers:analyze:services`, `/layers:analyze:callbacks`, `/layers:analyze:gods` for specific checks
-2. **Review code changes** - Run `/layers:review` for layered architecture review
-3. **Run specification test** - Run `/layers:spec-test` on specific files
-4. **Plan gradual adoption** - Run `/layers:plan [goal]` to plan incremental layerification
+1. **Analyze codebase** - Run `/layered-rails:analyze` for full analysis or `/layered-rails:analyze-services`, `/layered-rails:analyze-callbacks`, `/layered-rails:analyze-gods` for specific checks
+2. **Review code changes** - Run `/layered-rails:review` for layered architecture review
+3. **Run specification test** - Run `/layered-rails:spec-test` on specific files
+4. **Plan gradual adoption** - Run `/layered-rails:plan [goal]` to plan incremental layerification
 5. **Plan feature implementation** - I'll guide you using layered principles
 6. **Implement specific pattern** - I'll help with authorization, notifications, view components, AI integration, etc.
 
@@ -125,7 +125,7 @@ See [Specification Test Reference](references/core/specification-test.md) for de
 
 ## Refactoring Scenarios
 
-Canonical before/after transformations for the most common layerification moves. The `/layers:plan` agent uses these as reference templates when proposing phases.
+Canonical before/after transformations for the most common layerification moves. The `/layered-rails:plan` agent uses these as reference templates when proposing phases.
 
 | Scenario | Goal area | Reference |
 |----------|-----------|-----------|
@@ -142,13 +142,13 @@ Canonical before/after transformations for the most common layerification moves.
 
 | Command | Purpose |
 |---------|---------|
-| `/layers:review` | Review code changes from layered architecture perspective |
-| `/layers:spec-test` | Run specification test on specific files |
-| `/layers:analyze` | Full codebase abstraction layer analysis |
-| `/layers:analyze:services` | Audit `app/services/` and service-like classes — conventions, clusters, layer hygiene, test consequences |
-| `/layers:analyze:callbacks` | Score model callbacks, find extraction candidates |
-| `/layers:analyze:gods` | Find God objects via churn × complexity |
-| `/layers:plan [goal]` | Plan gradual adoption of layered patterns |
+| `/layered-rails:review` | Review code changes from layered architecture perspective |
+| `/layered-rails:spec-test` | Run specification test on specific files |
+| `/layered-rails:analyze` | Full codebase abstraction layer analysis |
+| `/layered-rails:analyze-services` | Audit `app/services/` and service-like classes — conventions, clusters, layer hygiene, test consequences |
+| `/layered-rails:analyze-callbacks` | Score model callbacks, find extraction candidates |
+| `/layered-rails:analyze-gods` | Find God objects via churn × complexity |
+| `/layered-rails:plan [goal]` | Plan gradual adoption of layered patterns |
 
 ## Topic References
 
