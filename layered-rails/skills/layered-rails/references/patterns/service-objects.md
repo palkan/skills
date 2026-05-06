@@ -1,5 +1,17 @@
 # Service Objects
 
+## Contents
+
+- Summary
+- When to Use
+- When NOT to Use
+- Key Principles
+- Implementation
+- Conventions to Establish
+- Anti-Patterns
+- From Services to Abstractions
+- Related Gems
+
 ## Summary
 
 Service objects represent single business operations between controllers and models. They fill the gap in Rails' MVC where neither controllers (inbound layer) nor models (domain layer) are appropriate homes for business logic orchestration.

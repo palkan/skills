@@ -1,5 +1,16 @@
 # Callbacks
 
+## Contents
+
+- Summary
+- Callback Scoring System
+- Good Callbacks (4-5/5)
+- Problematic Callbacks (1-2/5)
+- Callback Anti-Patterns
+- When Callbacks ARE Appropriate
+- Callback to Service Extraction
+- Testing Callback-Light Models
+
 ## Summary
 
 Callbacks are hooks into object lifecycle events. While Rails provides extensive callback support, overuse leads to tangled dependencies and hidden behavior. Use callbacks judiciously, preferring explicit operations.

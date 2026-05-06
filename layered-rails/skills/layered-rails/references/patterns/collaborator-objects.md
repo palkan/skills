@@ -1,5 +1,15 @@
 # Collaborator Objects
 
+## Contents
+
+- Summary
+- When to Use
+- When NOT to Use
+- Key Principles
+- Implementation
+- Comparison With Other Patterns
+- Anti-Patterns
+
 ## Summary
 
 A collaborator object is a small, focused class that owns a slice of behavior tightly coupled to a primary model. It lives alongside the model, takes the model (or a piece of its data) as input, and exposes a narrow interface. The classic shape is a **delegate object**: a separate class — sometimes a separate Active Record table — that the primary model delegates a coherent group of attributes and methods to.

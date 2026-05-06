@@ -1,5 +1,17 @@
 # Configuration
 
+## Contents
+
+- Summary
+- Layer Placement
+- Key Principles
+- Implementation with Anyway Config
+- Without Anyway Config
+- Testing Configuration
+- Anti-Patterns
+- File Organization
+- Configuration Sources (Priority)
+
 ## Summary
 
 Configuration management extracts settings from code into structured, environment-aware objects. Anyway Config provides type-safe, validated configuration with multiple source support.

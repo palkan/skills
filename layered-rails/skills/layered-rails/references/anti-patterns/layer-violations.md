@@ -2,6 +2,13 @@
 
 Cross-layer dependencies that break unidirectional data flow.
 
+## Contents
+
+- Current Attributes in Models
+- Request Objects in Services
+- Notifications in Models
+- Business Logic in Controllers
+
 ## Current Attributes in Models
 
 **Problem:** Models depend on presentation-layer context.

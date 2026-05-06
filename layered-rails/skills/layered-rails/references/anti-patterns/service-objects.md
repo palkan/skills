@@ -2,6 +2,12 @@
 
 Common mistakes when introducing service objects.
 
+## Contents
+
+- Anemic Models
+- Bag of Random Objects
+- Premature Abstraction
+
 ## Anemic Models
 
 **Problem:** All logic moved to services, models become data containers.

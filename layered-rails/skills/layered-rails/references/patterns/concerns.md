@@ -1,5 +1,19 @@
 # Concerns
 
+## Contents
+
+- Summary
+- When to Use
+- When NOT to Use
+- Key Principles
+- Concern Health Check
+- Implementation
+- Concern vs Other Patterns
+- Testing Concerns
+- Anti-Patterns
+- File Organization
+- Concern Checklist
+
 ## Summary
 
 Concerns are Ruby modules with `ActiveSupport::Concern` that extend model capabilities. They're Rails' built-in mechanism for composition, but require discipline to avoid becoming a dumping ground for unrelated code.

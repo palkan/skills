@@ -1,5 +1,17 @@
 # Value Objects
 
+## Contents
+
+- Summary
+- When to Use
+- When NOT to Use
+- Key Principles
+- Implementation
+- Money Example
+- Anti-Patterns
+- Performance Note
+- Related Gems
+
 ## Summary
 
 Value objects encapsulate domain concepts that are defined by their attributes rather than identity. They're immutable, comparable by value, and often created from multiple database columns or JSON stores.

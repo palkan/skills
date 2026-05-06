@@ -1,5 +1,16 @@
 # Authorization
 
+## Contents
+
+- Summary
+- Layer Placement
+- Key Principles
+- Implementation with Action Policy
+- Error Handling
+- Anti-Patterns
+- Testing
+- N+1 Authorization
+
 ## Summary
 
 Authorization determines what authenticated users can do. It belongs in the application layer as policy objects, enforced at presentation layer entry points, never leaking into domain models.

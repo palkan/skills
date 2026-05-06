@@ -2,6 +2,16 @@
 
 How to identify code that should be extracted to a different layer or abstraction.
 
+## Contents
+
+- Callback Scoring System
+- God Object Identification
+- Concern Health Check
+- Service Object Signals
+- Controller Fat Signals
+- Quick Reference
+- Static Analysis Tools
+
 ## Callback Scoring System
 
 Rate model callbacks to identify extraction candidates:
@@ -295,7 +305,7 @@ end
 | Controller action | > 15 lines | Extract to service |
 | Service with domain logic | Any calculations | Move to model |
 
-## Tools
+## Static Analysis Tools
 
 | Tool | Purpose | Command |
 |------|---------|---------|

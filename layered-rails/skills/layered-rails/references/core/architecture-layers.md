@@ -1,6 +1,14 @@
 # Architecture Layers
 
-## The Four Layers
+## Contents
+
+- The Four Layers (Presentation, Application, Domain, Infrastructure)
+- The Four Layering Rules
+- Mapping Rails Components to Layers
+- Applying Layered Architecture in Practice
+- Common Layering Mistakes
+
+## The Four Layers (Presentation, Application, Domain, Infrastructure)
 
 Rails applications are organized into four architecture layers with unidirectional data flow:
 
@@ -15,7 +23,7 @@ Rails applications are organized into four architecture layers with unidirection
 Presentation → Application → Domain → Infrastructure
 ```
 
-## The Four Rules
+## The Four Layering Rules
 
 ### Rule 1: Unidirectional Data Flow
 
@@ -105,7 +113,7 @@ class FindPostService
 end
 ```
 
-## Layer Mapping
+## Mapping Rails Components to Layers
 
 ### Presentation Layer
 
@@ -176,7 +184,7 @@ end
 - External communication
 - Technical implementations
 
-## Using These Principles
+## Applying Layered Architecture in Practice
 
 When designing or refactoring code:
 
@@ -185,7 +193,7 @@ When designing or refactoring code:
 3. **Apply specification test** — do tests verify appropriate responsibilities?
 4. **Extract if needed** — move code to the correct layer
 
-## Common Mistakes
+## Common Layering Mistakes
 
 | Mistake | Problem | Solution |
 |---------|---------|----------|

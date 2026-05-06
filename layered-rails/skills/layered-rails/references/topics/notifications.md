@@ -1,5 +1,16 @@
 # Notifications
 
+## Contents
+
+- Summary
+- Layer Placement
+- Key Principles
+- Implementation with Active Delivery
+- Without Active Delivery
+- Triggering Notifications from State Machines
+- Anti-Patterns
+- Delivery Patterns
+
 ## Summary
 
 Notifications deliver messages through multiple channels (email, SMS, push, in-app). Active Delivery provides a layer of abstraction over delivery mechanisms, making notifications a first-class domain concept.
@@ -193,7 +204,7 @@ end
 NotifyPostPublished.new(post).call
 ```
 
-## Triggering from Workflows
+## Triggering Notifications from State Machines
 
 When notifications are tied to state transitions, standalone workflows are an ideal place to trigger them via `after_transition` callbacks. This keeps models free of notification logic while centralizing state-related side effects.
 

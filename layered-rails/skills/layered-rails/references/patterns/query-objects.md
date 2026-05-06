@@ -1,5 +1,18 @@
 # Query Objects
 
+## Contents
+
+- Summary
+- When to Use
+- When NOT to Use
+- Key Principles
+- Implementation
+- Atomic vs Complex Scopes
+- Using Arel
+- Attaching Query Objects as Scopes
+- Anti-Patterns
+- Related Gems
+
 ## Summary
 
 Query objects encapsulate complex, context-specific database queries. They separate persistence concerns from domain models and provide reusable, testable query logic.

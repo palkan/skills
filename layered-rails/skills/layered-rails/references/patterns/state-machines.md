@@ -1,5 +1,19 @@
 # State Machines
 
+## Contents
+
+- Summary
+- When to Use
+- When NOT to Use
+- Key Principles
+- Identifying Implicit State Machines
+- Implementation
+- Events Over Direct Transitions
+- Transition Guards
+- Transition Callbacks
+- Anti-Patterns
+- Related Gems
+
 ## Summary
 
 State machines describe possible states, transitions between them, and triggering events. They make implicit state logic explicit and centralized, preventing scattered conditional logic across the codebase.

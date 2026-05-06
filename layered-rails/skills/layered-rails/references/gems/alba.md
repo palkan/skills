@@ -5,6 +5,20 @@ Fast JSON serialization with a clean DSL.
 **GitHub**: https://github.com/okuramasafumi/alba
 **Layer**: Presentation (API layer)
 
+## Contents
+
+- Installation
+- Basic Usage
+- Associations
+- Conditional Attributes
+- Computed Attributes
+- Root Key
+- Base Serializer
+- Key Transformation
+- TypeScript Generation
+- Performance Tips
+- Testing
+
 ## Installation
 
 ```ruby

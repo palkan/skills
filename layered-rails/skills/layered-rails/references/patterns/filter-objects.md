@@ -1,5 +1,17 @@
 # Filter Objects
 
+## Contents
+
+- Summary
+- When to Use
+- When NOT to Use
+- Key Principles
+- Implementation
+- Filter vs Query Object
+- Anti-Patterns
+- Security Considerations
+- Related Gems
+
 ## Summary
 
 Filter objects transform datasets based on user-provided parameters. They belong to the presentation layer, consuming request parameters and applying transformations to domain collections.

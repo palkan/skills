@@ -4,6 +4,17 @@ Eliminate boilerplate job classes by declaring background methods directly on mo
 
 **Repository:** [kaspth/active_job-performs](https://github.com/kaspth/active_job-performs)
 
+## Contents
+
+- When to Use
+- The `performs` Pattern
+- Detection Signals
+- Configuration
+- Application-Wide `performs` Patterns
+- When NOT to Use
+- Migration Path
+- Layer Placement
+
 ## When to Use
 
 Use when you have **anemic jobs** - job classes that just call a single method on a model:
@@ -24,7 +35,7 @@ class Post < ApplicationRecord
 end
 ```
 
-## The Pattern
+## The `performs` Pattern
 
 Replace anemic jobs with `performs`:
 
@@ -124,7 +135,7 @@ class Post < ApplicationRecord
 end
 ```
 
-## Application-Wide Patterns
+## Application-Wide `performs` Patterns
 
 Define common async operations in `ApplicationRecord`:
 

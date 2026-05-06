@@ -2,6 +2,12 @@
 
 Misuses of Active Record callbacks that signal a layering problem.
 
+## Contents
+
+- Operation Callbacks
+- Skip Callback Anti-Pattern
+- Callback Control Flags
+
 ## Operation Callbacks
 
 **Problem:** Business process steps disguised as callbacks.

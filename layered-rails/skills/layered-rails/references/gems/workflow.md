@@ -5,6 +5,18 @@ Finite state machine implementation for Ruby.
 **GitHub**: https://github.com/geekq/workflow
 **Layer**: Domain
 
+## Contents
+
+- Installation
+- Basic Usage
+- Per-Event Callback Methods
+- Transition Guards
+- State-Dependent Behavior
+- Standalone Workflow
+- Generic `on_transition` Hook
+- Querying by State
+- Testing
+
 ## Installation
 
 ```ruby
@@ -81,7 +93,7 @@ post.can_submit?  #=> true
 post.can_approve? #=> false
 ```
 
-## Transition Callbacks
+## Per-Event Callback Methods
 
 ```ruby
 class Post < ApplicationRecord
@@ -222,7 +234,7 @@ class Post < ApplicationRecord
 end
 ```
 
-## After Transition Hooks
+## Generic `on_transition` Hook
 
 ```ruby
 class Order < ApplicationRecord

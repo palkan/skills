@@ -1,5 +1,17 @@
 # Presenters
 
+## Contents
+
+- Summary
+- When to Use
+- When NOT to Use
+- Key Principles
+- Implementation
+- With Keynote (Library)
+- Anti-Patterns
+- Testing
+- Related Gems
+
 ## Summary
 
 Presenters encapsulate representation logic for views. They bridge models and the view layer, extracting UI-specific formatting, CSS classes, and display logic from domain objects.

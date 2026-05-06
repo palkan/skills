@@ -5,6 +5,19 @@ Transform controller params into database queries.
 **GitHub**: https://github.com/palkan/rubanok
 **Layer**: Presentation/Application boundary
 
+## Contents
+
+- Installation
+- Basic Usage
+- Param Mapping with `map`
+- Matching with `match`
+- Failure Strategy for Invalid Params
+- Nested Params
+- Sorting
+- Pagination
+- With Form Object
+- Testing
+
 ## Installation
 
 ```ruby
@@ -51,7 +64,7 @@ class PostsController < ApplicationController
 end
 ```
 
-## Matching Rules
+## Param Mapping with `map`
 
 ### Simple Match
 
@@ -108,7 +121,7 @@ class PostsProcessor < Rubanok::Processor
 end
 ```
 
-## Fail Strategy
+## Failure Strategy for Invalid Params
 
 ```ruby
 class PostsProcessor < Rubanok::Processor

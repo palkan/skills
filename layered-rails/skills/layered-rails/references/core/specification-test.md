@@ -1,12 +1,24 @@
 # The Specification Test
 
-## Principle
+## Contents
+
+- The Specification Principle
+- Quick Test-Outline Diagnostic
+- Layer Responsibilities
+- Example: Controller Specification
+- Example: Service Specification
+- Example: Model Specification
+- Cost Consideration
+- Detailed Code Audit (3-Step Process)
+- Quick Reference
+
+## The Specification Principle
 
 > If the specification of an object describes features beyond the primary responsibility of its abstraction layer, such features should be extracted into lower layers.
 
 The specification test helps identify code that belongs in a different layer by examining what tests would verify.
 
-## How to Apply
+## Quick Test-Outline Diagnostic
 
 1. **Write test structure** (contexts/describes) without implementation
 2. **Examine what the tests verify**
@@ -99,7 +111,7 @@ Moving logic to lower layers enables faster, simpler, more focused tests.
 | Controller/request | Slow | High | High |
 | System/integration | Slowest | Highest | Highest |
 
-## Applying the Test
+## Detailed Code Audit (3-Step Process)
 
 ### Step 1: List Responsibilities
 

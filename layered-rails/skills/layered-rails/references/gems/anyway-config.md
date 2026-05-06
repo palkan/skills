@@ -5,6 +5,19 @@ Configuration management with typed attributes and multiple sources.
 **GitHub**: https://github.com/palkan/anyway_config
 **Layer**: Infrastructure
 
+## Contents
+
+- Installation
+- Basic Usage
+- Base Config Class
+- Nested Configuration
+- Type Coercion
+- Validation
+- Environment Sources (Priority)
+- Local Overrides
+- Testing
+- Rails Credentials
+
 ## Installation
 
 ```ruby

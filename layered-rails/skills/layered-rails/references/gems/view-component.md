@@ -5,6 +5,17 @@ Framework for building reusable, testable view components.
 **GitHub**: https://github.com/viewcomponent/view_component
 **Layer**: Presentation
 
+## Contents
+
+- Installation
+- Basic Usage
+- Slots
+- Collections
+- Inline Components
+- Stimulus Integration
+- Previews
+- Testing
+
 ## Installation
 
 ```ruby

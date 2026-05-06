@@ -1,5 +1,16 @@
 # Serializers
 
+## Contents
+
+- Summary
+- When to Use
+- When NOT to Use
+- Key Principles
+- Implementation
+- Anti-Patterns
+- Testing
+- Related Gems
+
 ## Summary
 
 Serializers are specialized presenters for API responses. They form a dedicated abstraction layer between models and the external API contract, providing consistent JSON formatting and the ability to generate TypeScript types.

@@ -2,6 +2,11 @@
 
 Replace a controller orchestrating multiple models with a form object that owns the registration workflow.
 
+## Contents
+
+- Before (fat controller)
+- After (form object)
+
 ## Before
 
 ```ruby

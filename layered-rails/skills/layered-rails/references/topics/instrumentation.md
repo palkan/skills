@@ -1,5 +1,18 @@
 # Instrumentation
 
+## Contents
+
+- Summary
+- Layer Placement
+- Key Principles
+- Rails Instrumentation API
+- Structured Logging
+- Metrics
+- Service Instrumentation
+- Anti-Patterns
+- Testing Instrumentation
+- Performance Considerations
+
 ## Summary
 
 Instrumentation provides visibility into application behavior through logging, metrics, and tracing. It's an infrastructure concern that should be non-invasive to domain logic.

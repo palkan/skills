@@ -1,5 +1,17 @@
 # Repositories
 
+## Contents
+
+- Summary
+- When to Use
+- When NOT to Use
+- Key Principles
+- Implementation
+- Repository vs Query Object
+- Testing
+- Anti-Patterns
+- File Organization
+
 ## Summary
 
 Repositories are a **last-resort** data-access pattern in Rails. Prefer simpler tools first:

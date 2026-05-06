@@ -1,5 +1,17 @@
 # Form Objects
 
+## Contents
+
+- Summary
+- When to Use
+- When NOT to Use
+- Key Principles
+- Implementation
+- Usage in Controllers
+- Wizard Forms (Multi-Step)
+- Anti-Patterns
+- Related Gems
+
 ## Summary
 
 Form objects handle specific user interactions involving data submission. They belong to the presentation layer and are useful when the form doesn't map 1:1 to a model — creating multiple records, updating virtual attributes, or handling complex validation contexts.

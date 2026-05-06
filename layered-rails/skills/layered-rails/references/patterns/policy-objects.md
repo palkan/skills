@@ -1,5 +1,20 @@
 # Policy Objects
 
+## Contents
+
+- Summary
+- When to Use
+- When NOT to Use
+- Key Principles
+- Implementation
+- Authorization in Views
+- Roles and Permissions
+- Scoping-Based Authorization
+- N+1 Authorization Problem
+- Testing
+- Anti-Patterns
+- Related Gems
+
 ## Summary
 
 Policy objects encapsulate authorization rules, determining whether a user can perform specific actions on resources. They belong to the application layer, sitting between presentation (enforcement) and domain (entities).

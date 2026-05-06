@@ -5,6 +5,17 @@ Abstraction layer over delivery mechanisms (email, push, SMS, etc.).
 **GitHub**: https://github.com/palkan/active_delivery
 **Layer**: Application (delivery classes) / Infrastructure (notifiers)
 
+## Contents
+
+- Installation
+- Basic Usage
+- Multiple Channels
+- Conditional Delivery
+- User Preferences
+- Custom Delivery Lines
+- Testing
+- Inline Mode (Development)
+
 ## Installation
 
 ```ruby
