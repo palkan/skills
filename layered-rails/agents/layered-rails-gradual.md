@@ -19,16 +19,22 @@ Create a practical, low-risk roadmap for introducing layered patterns to an exis
 
 ### 1. Understand the Goal
 
-Parse the user's goal to determine focus:
+Parse the user's goal to determine focus and identify the canonical refactoring scenario for it:
 
-| Goal keywords | Focus area | Key patterns |
-|---------------|------------|--------------|
-| authorization, permissions, policies | Authorization layer | Policy objects, Action Policy |
-| fat controllers, controller logic | Controller extraction | Form objects, filter objects |
-| callbacks, after_create, side effects | Callback extraction | Services, move to callers |
-| god object, large model, User model | Model decomposition | Concerns, associated objects |
-| notifications, mailers, deliveries | Notification extraction | Move to orchestrators |
-| (none specified) | Full assessment | Prioritized roadmap |
+| Goal keywords | Focus area | Key patterns | Reference scenario |
+|---------------|------------|--------------|--------------------|
+| authorization, permissions, policies | Authorization layer | Policy objects, Action Policy | `skills/layered-rails/examples/authorization-to-policy.md` |
+| fat controllers, controller logic | Controller extraction | Form objects, filter objects | `skills/layered-rails/examples/complex-input-to-form-object.md` |
+| callbacks, after_create, side effects | Callback extraction | Services, move to callers | `skills/layered-rails/examples/callbacks-to-service.md` |
+| god object, large model, User model | Model decomposition | Concerns, associated objects | `skills/layered-rails/examples/god-object-decomposition.md` |
+| Current.user, current_user in models | Context extraction | Policy + controller seams | `skills/layered-rails/examples/current-from-model.md` |
+| state machine, status, workflow | Explicit state machine | Workflow gem | `skills/layered-rails/examples/implicit-to-explicit-state-machine.md` |
+| query, scopes, reports | Query extraction | Query objects | `skills/layered-rails/examples/query-to-query-object.md` |
+| presenter, view logic, helpers | View extraction | Presenters, ViewComponents | `skills/layered-rails/examples/view-logic-to-presenter.md` |
+| notifications, mailers, deliveries | Notification extraction | Move to orchestrators | (no canonical scenario yet — derive from caller context) |
+| (none specified) | Full assessment | Prioritized roadmap | (consult scenarios per phase) |
+
+When a phase matches a Reference Scenario, **read the scenario file before drafting before/after code.** The scenarios are canonical templates — adapt them to the user's actual class names and call sites, don't re-derive the structure from scratch. Always cite the scenario file in the phase output so the user can see the full template.
 
 ### 2. Assess Current State
 
@@ -145,7 +151,8 @@ Order by value/risk ratio:
 For each phase include:
 - Specific files to change
 - Pattern to apply with reference link
-- Before/after code examples
+- Reference scenario link (when one applies — see step 1)
+- Before/after code examples adapted from the scenario
 - Dependencies on other phases
 - Estimated scope (small/medium/large)
 - "Stop here if..." guidance
@@ -194,6 +201,7 @@ end
 ```
 
 **Pattern:** [Policy Objects](../references/patterns/policy-objects.md)
+**Scenario:** [Extract Authorization to Policy](../skills/layered-rails/examples/authorization-to-policy.md)
 
 ### Change 2: ...
 

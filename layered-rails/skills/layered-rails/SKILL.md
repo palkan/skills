@@ -67,7 +67,15 @@ Rails applications are organized into four architecture layers with **unidirecti
 | Controller has business logic | Pricing calculations in action | Extract to service or model |
 | Anemic models | All logic in services | Keep domain logic in models |
 
-See [Anti-Patterns Reference](references/anti-patterns.md) for complete list.
+| Category | Reference |
+|----------|-----------|
+| Layer violations (Current in models, request in services, notifications in models, business logic in controllers) | [layer-violations.md](references/anti-patterns/layer-violations.md) |
+| Service objects (anemic models, bag of random objects, premature abstraction) | [service-objects.md](references/anti-patterns/service-objects.md) |
+| Callbacks (operation callbacks, skip callbacks, control flags) | [callbacks.md](references/anti-patterns/callbacks.md) |
+| Concerns (code-slicing, overgrown) | [concerns.md](references/anti-patterns/concerns.md) |
+| Helpers (HTML construction in helpers) | [helpers.md](references/anti-patterns/helpers.md) |
+| Jobs (anemic jobs) | [jobs.md](references/anti-patterns/jobs.md) |
+| Testing (testing wrong layer) | [testing.md](references/anti-patterns/testing.md) |
 
 ### The Specification Test
 
@@ -111,6 +119,21 @@ See [Specification Test Reference](references/core/specification-test.md) for de
 | Multi-channel notifications | Delivery Object (Active Delivery) |
 
 **Remember:** Services are a "waiting room" for code until proper abstractions emerge. Don't let `app/services` become a bag of random objects.
+
+## Refactoring Scenarios
+
+Canonical before/after transformations for the most common layerification moves. The `/layers:gradual` agent uses these as reference templates when proposing phases.
+
+| Scenario | Goal area | Reference |
+|----------|-----------|-----------|
+| Extract callbacks to service | callbacks, after_create chains | [callbacks-to-service.md](examples/callbacks-to-service.md) |
+| Extract authorization to policy | authorization, permissions | [authorization-to-policy.md](examples/authorization-to-policy.md) |
+| Extract query logic to query object | complex scopes, reporting queries | [query-to-query-object.md](examples/query-to-query-object.md) |
+| Extract Current from model | Current.* in domain | [current-from-model.md](examples/current-from-model.md) |
+| Decompose god object with associated objects | god model, large User/Account | [god-object-decomposition.md](examples/god-object-decomposition.md) |
+| Replace implicit state machine | timestamp-based status | [implicit-to-explicit-state-machine.md](examples/implicit-to-explicit-state-machine.md) |
+| Extract view logic to presenter | template logic, formatting | [view-logic-to-presenter.md](examples/view-logic-to-presenter.md) |
+| Form object for complex input | fat controllers, multi-model forms | [complex-input-to-form-object.md](examples/complex-input-to-form-object.md) |
 
 ## Commands Reference
 
