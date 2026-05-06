@@ -1,29 +1,29 @@
-# /layers:gradual
+# /layers:plan
 
 Plan gradual adoption of layered architecture patterns.
 
 ## Usage
 
 ```
-/layers:gradual [goal]
+/layers:plan [goal]
 ```
 
-- `/layers:gradual` - Full layerification roadmap
-- `/layers:gradual introduce authorization` - Focus on policies
-- `/layers:gradual refactor fat controllers` - Focus on extracting to forms/services
-- `/layers:gradual extract callbacks from User model` - Specific model focus
-- `/layers:gradual reduce god objects` - Focus on model decomposition
+- `/layers:plan` - Full layerification roadmap
+- `/layers:plan introduce authorization` - Focus on policies
+- `/layers:plan refactor fat controllers` - Focus on extracting to forms/services
+- `/layers:plan extract callbacks from User model` - Specific model focus
+- `/layers:plan reduce god objects` - Focus on model decomposition
 
-Launches the `layered-rails-gradual` agent with the specified goal.
+Launches the `layered-rails-planner` agent with the specified goal.
 
 ## Examples
 
 ```
-/layers:gradual
-/layers:gradual introduce proper authorization using Action Policy
-/layers:gradual move notifications out of models
-/layers:gradual extract complex form handling
-/layers:gradual refactor Order model callbacks
+/layers:plan
+/layers:plan introduce proper authorization using Action Policy
+/layers:plan move notifications out of models
+/layers:plan extract complex form handling
+/layers:plan refactor Order model callbacks
 ```
 
 ## What It Does

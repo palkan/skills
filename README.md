@@ -25,7 +25,7 @@ Design and review Rails applications using layered architecture principles from 
 | `/layers:analyze:gods` | Find god objects via churn x complexity |
 | `/layers:review` | Review code changes for layer violations |
 | `/layers:spec-test` | Run specification test on specific files |
-| `/layers:gradual [goal]` | Plan incremental adoption of layered patterns |
+| `/layers:plan [goal]` | Plan incremental adoption of layered patterns |
 
 ### Integration with compound-engineering
 
@@ -60,7 +60,7 @@ Similarly, for planning features, add to your `CLAUDE.md` (or `AGENTS.md`, or wh
 ### For planning agents
 
 When planning new features or architectural changes, use the `layered-rails` skill for analysis:
-- `/layers:gradual` — plan incremental adoption of layered patterns
+- `/layers:plan` — plan incremental adoption of layered patterns
 - `/layers:analyze` — full codebase architecture analysis
 - `/layers:review` — review code from a layered architecture perspective
 - `/layers:spec-test` — apply the specification test to evaluate layer placement
@@ -71,7 +71,7 @@ Alternatively, you can try to add shorter instructions to `CLAUDE.md`:
 ```md
 Extend the list of **review agents** with the `layered-rails:layered-rails-reviewer` agent to check for architecture layer violations. Must be applicable to such commands from the compound-engineering plugin as `/workflow:review`, `/plan_review`, and similar.
 
-Extend the list of **planning agents** with the `layered-rails:layered-rails-gradual` agent to plan refactoring according to the layered design principles. Must be applicable to such commands from the compound-engineering plugin as `/workflow:plan`, `/deepen_plan`, and similar.
+Extend the list of **planning agents** with the `layered-rails:layered-rails-planner` agent to plan refactoring according to the layered design principles. Must be applicable to such commands from the compound-engineering plugin as `/workflow:plan`, `/deepen_plan`, and similar.
 ```
 
 ## License

@@ -1,6 +1,6 @@
 ---
 name: layered-rails
-description: Design and review Rails applications using layered architecture principles from "Layered Design for Ruby on Rails Applications". Use when analyzing Rails codebases, reviewing PRs for architecture violations, planning feature implementations, or implementing patterns like authorization, view components, or AI integration. Triggers on "layered design", "architecture layers", "abstraction", "refactor","specification test", "layer violation", "extract service", "fat controller", "god object".
+description: Write, refactor, and review Rails code using layered architecture principles from "Layered Design for Ruby on Rails Applications". Use when writing or refactoring Rails code — models, controllers, services, jobs, mailers, policies, forms, query objects, presenters, view components, state machines, serializers, or AI/LLM features — to apply correct patterns and avoid layer violations; and when reviewing Rails code, PRs, or diffs for layer violations, fat controllers/models, anemic models, callback misuse, god objects, or specification-test failures. Triggers on "layered design", "architecture layers", "abstraction layer", "specification test", "layer violation", "fat controller/model", "god object", "anemic model", "extract service/callback/policy/concern", "service object", "form object", "policy object", "query object", "value object", "presenter", "view component", "state machine", "Active Delivery", "callback scoring", "Rails refactor/review", "Rails patterns/best practices".
 allowed-tools:
   - Grep
   - Glob
@@ -47,7 +47,7 @@ See [Architecture Layers Reference](references/core/architecture-layers.md) for 
 1. **Analyze codebase** - Run `/layers:analyze` for full analysis or `/layers:analyze:services`, `/layers:analyze:callbacks`, `/layers:analyze:gods` for specific checks
 2. **Review code changes** - Run `/layers:review` for layered architecture review
 3. **Run specification test** - Run `/layers:spec-test` on specific files
-4. **Plan gradual adoption** - Run `/layers:gradual [goal]` to plan incremental layerification
+4. **Plan gradual adoption** - Run `/layers:plan [goal]` to plan incremental layerification
 5. **Plan feature implementation** - I'll guide you using layered principles
 6. **Implement specific pattern** - I'll help with authorization, notifications, view components, AI integration, etc.
 
@@ -125,7 +125,7 @@ See [Specification Test Reference](references/core/specification-test.md) for de
 
 ## Refactoring Scenarios
 
-Canonical before/after transformations for the most common layerification moves. The `/layers:gradual` agent uses these as reference templates when proposing phases.
+Canonical before/after transformations for the most common layerification moves. The `/layers:plan` agent uses these as reference templates when proposing phases.
 
 | Scenario | Goal area | Reference |
 |----------|-----------|-----------|
@@ -148,7 +148,7 @@ Canonical before/after transformations for the most common layerification moves.
 | `/layers:analyze:services` | Audit `app/services/` and service-like classes — conventions, clusters, layer hygiene, test consequences |
 | `/layers:analyze:callbacks` | Score model callbacks, find extraction candidates |
 | `/layers:analyze:gods` | Find God objects via churn × complexity |
-| `/layers:gradual [goal]` | Plan gradual adoption of layered patterns |
+| `/layers:plan [goal]` | Plan gradual adoption of layered patterns |
 
 ## Topic References
 
