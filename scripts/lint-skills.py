@@ -6,16 +6,31 @@ Enforces Anthropic's official skill best practices:
 https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices
 
 Checks SKILL.md frontmatter and body, plus the bundled reference files in the
-skill directory:
+skill directory. "Reference files" means every .md under the skill dir except
+SKILL.md itself — including files in references/, examples/, and workflows/.
+
+Reference-file rules:
   - reference.toc            — files >100 lines need a '## Contents' section
   - reference.length         — reference files capped at 500 lines
-  - reference.one-level-deep — only SKILL.md should link to other reference files
+  - reference.one-level-deep — links between reference files must follow the
+                               tier hierarchy (see below); reference files at
+                               the same or shallower tier may not cross-link.
   - reference.links-exist    — markdown links inside reference files must resolve
   - reference.no-orphans     — every .md in the skill dir must be linked from SKILL.md
   - plugin.links-exist       — markdown links in plugin files (commands, agents, etc.)
                                outside any skill dir must also resolve
 
-Every rule is pass/fail — no warnings. Use lint-skip in frontmatter to skip rules.
+Tier hierarchy (used by reference.one-level-deep):
+  - Tier 0: SKILL.md (the skill index — may link to anything)
+  - Tier 1: workflows/*.md (procedures — may link DOWN to tier 2)
+  - Tier 2: references/*.md, examples/*.md (leaf knowledge — no further links)
+  Files directly under the skill dir (other than SKILL.md) are treated as tier 1.
+  A reference file at tier N may link to files at tier N+1 or deeper; links to
+  the same tier or a shallower tier fail (cross-link via SKILL.md instead).
+
+Every rule is pass/fail — no warnings. Use `lint-skip:` in SKILL.md frontmatter
+to skip rules skill-wide, or in a reference file's own frontmatter to scope the
+skip to that single file. Each entry needs `rule:` and `reason:`.
 
 Usage:
     python3 scripts/lint-skills.py                         # lint all skills
@@ -253,6 +268,19 @@ def discover_reference_files(skill_dir: Path) -> list[Path]:
     return sorted(refs)
 
 
+def reference_tier(rel_posix: str) -> int:
+    """Tier of a reference file relative to its skill dir.
+
+    Tier 0 is SKILL.md (handled separately). Tier 1 is workflows/ — procedures
+    that may link DOWN to leaf knowledge. Tier 2 is references/ and examples/
+    — leaf files that should not cross-link. Anything else under the skill dir
+    is treated as tier 1 by default.
+    """
+    if rel_posix.startswith("references/") or rel_posix.startswith("examples/"):
+        return 2
+    return 1
+
+
 def is_external_or_placeholder(href: str) -> bool:
     """Mirror of the link-skip logic from the references-exist check."""
     if href.startswith(("http://", "https://", "#", "mailto:", "tel:")):
@@ -394,6 +422,28 @@ def check_skill(skill_md: Path) -> list[dict]:
     reference_files = discover_reference_files(skill_dir)
     skill_dir_resolved = skill_dir.resolve()
 
+    # Per-file lint-skip: a reference file may exempt itself from rules in its
+    # own frontmatter. Validates against KNOWN_RULES and requires a reason.
+    per_file_skips: dict[Path, set[str]] = {}
+    for ref in reference_files:
+        ref_skips: set[str] = set()
+        ref_fm, _, _ = parse_frontmatter(ref)
+        if ref_fm:
+            for entry in ref_fm.get("lint-skip", []):
+                rule_id = entry.get("rule", "")
+                reason = entry.get("reason", "")
+                if not reason:
+                    add("invalid-lint-skip", "FAIL",
+                        f"{ref.relative_to(skill_dir).as_posix()}: lint-skip entry "
+                        f"for '{rule_id}' missing required 'reason'")
+                elif rule_id not in KNOWN_RULES:
+                    add("invalid-lint-skip", "FAIL",
+                        f"{ref.relative_to(skill_dir).as_posix()}: lint-skip "
+                        f"references unknown rule '{rule_id}'")
+                else:
+                    ref_skips.add(rule_id)
+        per_file_skips[ref] = ref_skips
+
     missing_toc: list[str] = []
     too_long: list[str] = []
     nested: list[str] = []     # "from -> to" pairs
@@ -403,15 +453,16 @@ def check_skill(skill_md: Path) -> list[dict]:
         rel = ref.relative_to(skill_dir).as_posix()
         ref_text = ref.read_text(encoding="utf-8")
         line_count = ref_text.count("\n") + 1
+        ref_skips = per_file_skips[ref]
 
         # TOC required for files >100 lines, in the first ~30 lines
-        if line_count > REFERENCE_TOC_MIN_LINES:
+        if line_count > REFERENCE_TOC_MIN_LINES and "reference.toc" not in ref_skips:
             head = "\n".join(ref_text.splitlines()[:TOC_SEARCH_LINES])
             if not TOC_HEADER_RE.search(head):
                 missing_toc.append(f"{rel} ({line_count} lines)")
 
         # Length cap matches SKILL.md guidance
-        if line_count > REFERENCE_MAX_LINES:
+        if line_count > REFERENCE_MAX_LINES and "reference.length" not in ref_skips:
             too_long.append(f"{rel} ({line_count} lines)")
 
         for match in MD_LINK_RE.finditer(ref_text):
@@ -425,16 +476,25 @@ def check_skill(skill_md: Path) -> list[dict]:
 
             # links-exist: target file must exist on disk
             if not target.exists():
-                broken.append(f"{rel} -> {href}")
+                if "reference.links-exist" not in ref_skips:
+                    broken.append(f"{rel} -> {href}")
                 continue  # broken targets aren't useful for further checks
 
-            # one-level-deep: links to other files inside the skill dir are nested
+            # one-level-deep: links between reference files must respect the
+            # tier hierarchy (workflows → references|examples is allowed;
+            # same-tier or upward links fail — cross-link via SKILL.md instead).
             try:
                 target_rel = target.relative_to(skill_dir_resolved)
             except ValueError:
                 continue  # link points outside the skill dir
             if target == ref.resolve():
                 continue  # self-link with fragment
+            src_tier = reference_tier(rel)
+            tgt_tier = reference_tier(target_rel.as_posix())
+            if src_tier < tgt_tier:
+                continue  # downward link through the hierarchy
+            if "reference.one-level-deep" in ref_skips:
+                continue
             nested.append(f"{rel} -> {target_rel.as_posix()}")
 
     if missing_toc:
@@ -464,7 +524,9 @@ def check_skill(skill_md: Path) -> list[dict]:
         sample = "; ".join(nested[:3])
         more = f" (+{len(nested) - 3} more)" if len(nested) > 3 else ""
         add("reference.one-level-deep", "FAIL",
-            f"Reference files link to other reference files (link only from SKILL.md): "
+            f"Reference files cross-link at the same or shallower tier "
+            f"(workflows/ may link down to references/|examples/, but not sideways "
+            f"or upward — cross-link via SKILL.md instead): "
             f"{sample}{more}")
     elif reference_files:
         add("reference.one-level-deep", "PASS")
@@ -496,6 +558,8 @@ def check_skill(skill_md: Path) -> list[dict]:
 
     orphans: list[str] = []
     for ref in reference_files:
+        if "reference.no-orphans" in per_file_skips[ref]:
+            continue
         if ref.resolve() not in linked_targets:
             orphans.append(ref.relative_to(skill_dir).as_posix())
 

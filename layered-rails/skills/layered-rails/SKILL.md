@@ -42,14 +42,30 @@ Rails applications are organized into four architecture layers with **unidirecti
 
 See [Architecture Layers Reference](references/core/architecture-layers.md) for the full layer responsibilities and the Four Rules deep-dive.
 
-## What Would You Like To Do?
+## What this skill is for
 
-1. **Analyze codebase** - Run `/layered-rails:analyze` for full analysis or `/layered-rails:analyze-services`, `/layered-rails:analyze-callbacks`, `/layered-rails:analyze-gods` for specific checks
-2. **Review code changes** - Run `/layered-rails:review` for layered architecture review
-3. **Run specification test** - Run `/layered-rails:spec-test` on specific files
-4. **Plan gradual adoption** - Run `/layered-rails:plan [goal]` to plan incremental layerification
-5. **Plan feature implementation** - I'll guide you using layered principles
-6. **Implement specific pattern** - I'll help with authorization, notifications, view components, AI integration, etc.
+Use this skill when:
+
+1. **Analyzing a codebase** — apply the [architecture analysis](workflows/analyze.md) for a full audit, or zoom in with the [service-layer audit](workflows/analyze-services.md), [callback analysis](workflows/analyze-callbacks.md), or [god-object analysis](workflows/analyze-gods.md).
+2. **Reviewing code changes** — run the [code review workflow](workflows/review.md) on a diff, file, or branch.
+3. **Running the specification test** — use the [spec-test workflow](workflows/spec-test.md) on a single file or directory to evaluate whether code belongs in its current layer.
+4. **Planning gradual adoption** — generate a phased roadmap with the [layerification plan workflow](workflows/plan.md), focused on a goal like "introduce authorization" or "decompose god objects."
+5. **Planning a feature** — I'll apply the layered principles below to whichever code you're about to write.
+6. **Implementing a specific pattern** — authorization, notifications, view components, AI integration, etc. — see the Pattern Catalog and Topic References below.
+
+In Claude Code with this skill installed as a plugin (`/plugin install layered-rails@palkan-skills`), each workflow above is also reachable as a slash command — see [Slash Commands](#slash-commands). Natural-language requests ("review this file with layered-rails", "run the specification test on `app/models/order.rb`") work in any environment that has the skill loaded.
+
+## Workflows
+
+Reusable procedures bundled inside this skill. Read the file and apply it to the target code:
+
+- [Architecture analysis](workflows/analyze.md) — full layered-architecture audit of a Rails codebase
+- [Code review](workflows/review.md) — review a diff or file set for layer violations
+- [Specification test](workflows/spec-test.md) — evaluate whether code belongs in its current layer
+- [Service-layer audit](workflows/analyze-services.md) — deep audit of `app/services/` and service-like classes (per-cluster proposals, contracts, layer hygiene)
+- [Callback analysis](workflows/analyze-callbacks.md) — score Active Record callbacks and find extraction candidates
+- [God-object analysis](workflows/analyze-gods.md) — identify oversized models and recommend decomposition
+- [Gradual layerification plan](workflows/plan.md) — incremental roadmap for adopting layered patterns
 
 ## Core Principles
 
@@ -125,7 +141,7 @@ See [Specification Test Reference](references/core/specification-test.md) for de
 
 ## Refactoring Scenarios
 
-Canonical before/after transformations for the most common layerification moves. The `/layered-rails:plan` agent uses these as reference templates when proposing phases.
+Canonical before/after transformations for the most common layerification moves. The [layerification plan workflow](workflows/plan.md) uses these as reference templates when proposing phases.
 
 | Scenario | Goal area | Reference |
 |----------|-----------|-----------|
@@ -138,17 +154,19 @@ Canonical before/after transformations for the most common layerification moves.
 | Extract view logic to presenter | template logic, formatting | [view-logic-to-presenter.md](examples/view-logic-to-presenter.md) |
 | Form object for complex input | fat controllers, multi-model forms | [complex-input-to-form-object.md](examples/complex-input-to-form-object.md) |
 
-## Commands Reference
+## Slash Commands
 
-| Command | Purpose |
-|---------|---------|
-| `/layered-rails:review` | Review code changes from layered architecture perspective |
-| `/layered-rails:spec-test` | Run specification test on specific files |
-| `/layered-rails:analyze` | Full codebase abstraction layer analysis |
-| `/layered-rails:analyze-services` | Audit `app/services/` and service-like classes — conventions, clusters, layer hygiene, test consequences |
-| `/layered-rails:analyze-callbacks` | Score model callbacks, find extraction candidates |
-| `/layered-rails:analyze-gods` | Find God objects via churn × complexity |
-| `/layered-rails:plan [goal]` | Plan gradual adoption of layered patterns |
+These slash commands are available **only when this skill is installed as a Claude Code plugin** (`/plugin install layered-rails@palkan-skills`). When the skill is installed via [skills.sh](https://skills.sh/) or any other path that delivers `skills/layered-rails/` without the surrounding plugin, the commands won't be present — invoke the corresponding workflow directly (see [Workflows](#workflows)) or just ask in plain language.
+
+| Command | Workflow | Purpose |
+|---------|----------|---------|
+| `/layered-rails:review` | [review](workflows/review.md) | Review code changes from a layered architecture perspective |
+| `/layered-rails:spec-test` | [spec-test](workflows/spec-test.md) | Run specification test on specific files |
+| `/layered-rails:analyze` | [analyze](workflows/analyze.md) | Full codebase abstraction-layer analysis |
+| `/layered-rails:analyze-services` | [analyze-services](workflows/analyze-services.md) | Audit `app/services/` and service-like classes — conventions, clusters, layer hygiene, test consequences |
+| `/layered-rails:analyze-callbacks` | [analyze-callbacks](workflows/analyze-callbacks.md) | Score model callbacks, find extraction candidates |
+| `/layered-rails:analyze-gods` | [analyze-gods](workflows/analyze-gods.md) | Find god objects via churn × complexity |
+| `/layered-rails:plan [goal]` | [plan](workflows/plan.md) | Plan gradual adoption of layered patterns |
 
 ## Topic References
 

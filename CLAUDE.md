@@ -48,7 +48,7 @@ Key rules to remember when authoring (full list in the script's module docstring
 - `frontmatter.name.matches-dir` — `name:` must equal the skill directory name
 - `body.length` / `reference.length` — ≤500 lines; split if larger
 - `reference.toc` — reference files >100 lines need a `## Contents` section near the top
-- `reference.one-level-deep` — only `SKILL.md` may link to reference files; references must not link to other references (cross-link through `SKILL.md`)
+- `reference.one-level-deep` — links between non-SKILL `.md` files inside the skill must follow the tier hierarchy: `workflows/` (tier 1) may link DOWN to `references/` and `examples/` (tier 2); same-tier or upward links must go through `SKILL.md`
 - `reference.no-orphans` — every `.md` in the skill dir must be linked from `SKILL.md`
 - `reference.links-exist` / `plugin.links-exist` — all relative markdown links must resolve
 

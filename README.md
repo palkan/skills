@@ -1,6 +1,6 @@
 # palkan/skills
 
-A collection of [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skills by [Vladimir Dementyev](https://github.com/palkan).
+A collection of coding-agent skills by [Vladimir Dementyev](https://github.com/palkan). The bundled plugins and slash commands target [Claude Code](https://docs.anthropic.com/en/docs/claude-code), while the core skill content (`SKILL.md` + workflows + references + examples) is also usable from other environments such as Codex.
 
 ## Available Skills
 
@@ -27,13 +27,13 @@ Design and review Rails applications using layered architecture principles from 
 | `/layered-rails:spec-test` | Run specification test on specific files |
 | `/layered-rails:plan [goal]` | Plan incremental adoption of layered patterns |
 
-**Install via [skills.sh](https://skills.sh/) (skill content only — no slash commands or sub-agents):**
+**Install via [skills.sh](https://skills.sh/) (skill content only — no slash-command bindings):**
 
 ```
 npx skills add palkan/skills --skill layered-rails
 ```
 
-skills.sh installs only the `SKILL.md` and its references — the `/layered-rails:*` slash commands and the `layered-rails-planner` / `layered-rails-reviewer` sub-agents are not part of the skill spec and won't be copied. Useful when you want the layered-design knowledge available to Claude without the workflow tooling; otherwise prefer `/plugin install`.
+skills.sh delivers the `skills/layered-rails/` tree — `SKILL.md`, `workflows/`, `references/`, and `examples/`. The `/layered-rails:*` slash commands and the `layered-rails-planner` / `layered-rails-reviewer` sub-agent registrations are not part of the skill spec and won't be copied, but every workflow they wrap is in `workflows/` and can be invoked by name in plain language ("run the layered-rails review workflow on this diff"). Use this path when you want the same skill in Codex, the Claude API, or any other agent that supports skills.sh; use `/plugin install` when you want the slash commands.
 
 ### Integration with compound-engineering
 
