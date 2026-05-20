@@ -1,3 +1,9 @@
+---
+lint-skip:
+  - rule: reference.one-level-deep
+    reason: "Review workflow defers service classification to the service-layer audit workflow; the deep-link anchors (Phase 2.2, §3.6.x) are the authoritative procedure being delegated to, and routing them through SKILL.md would lose precision and indirection users would have to chase."
+---
+
 # Layered Rails Review Workflow
 
 Code review applying layered architecture principles to Rails diffs, files, or branches.
@@ -34,12 +40,23 @@ This review evaluates code against the principles from "Layered Design for Ruby 
    - Grep for `Current.*` in models
    - Check service parameters for request/params objects
    - Look for business logic in controllers
-4. **Run the [specification test](../references/core/specification-test.md)** on key files
-5. **Check for extraction signals**
+4. **Apply the service-layer audit's classification rules** when the diff touches:
+   - `app/services/`, `app/agents/`, `app/clients/`, `app/operations/`, `app/notifiers/`, or other application-layer specializations
+   - Any **new non-AR class under `app/models/`** (service-shaped POROs, `*Extractor`/`*Suggester`/`*Writer`/`*Checker`/`*Merger`/`*Filler`/`*Enricher` files), or
+   - HTTP/SDK/LLM SDK calls anywhere in the diff (`RubyLLM`, `OpenAI`, `Anthropic`, `Stripe::`, `Net::HTTP`, `ActionCable.server.broadcast`, etc.)
+
+   For each such file, run the [service-layer audit's classification rule (Phase 2.2, "purpose first, regex second")](analyze-services.md#22-cluster-classification-promote-vs-demote) and the misplaced-code checks (§3.6.1–§3.6.5). Do **not** improvise a classification from layered-rails principles alone — the audit is the authority. In particular:
+
+   - **LLM/AI SDK calls** are not domain calculators; they're agent-layer (§3.6.5 + Phase 2.1 cluster table → `app/agents/`).
+   - **Non-AR class under `app/models/` that wraps HTTP/SDK/broadcast** → promote to `app/services/` or a specialization layer (§3.6.4). The `app/services/` self-separation gate (§3.6.1) does **not** apply.
+   - **Thin SDK/broadcast wrappers** with no value-add → delete or hoist to a concern (§3.6.5). Verify with the SDK's docs whether the wrapper adds anything the SDK already provides.
+   - **"Models-first" is not a permission slip.** A single application-shaped class under `app/models/` makes the verdict **Mixed**, not "Mature decomposition (models-first variant)". Recommend introducing `app/services/` for the leaks — see Phase 1.3's decision gate and "What 'models-first' actually means".
+5. **Run the [specification test](../references/core/specification-test.md)** on key files
+6. **Check for extraction signals**
    - Score callbacks
    - Assess concern health
    - Check god-object indicators
-6. **Generate review report** with prioritized issues
+7. **Generate review report** with prioritized issues
 
 ## Review Principles
 
@@ -164,6 +181,9 @@ Evaluate pattern choices:
 - [ ] Controllers don't contain business calculations
 - [ ] Views don't query database directly (beyond simple associations)
 - [ ] Mailers aren't called from model callbacks
+- [ ] **Non-AR classes under `app/models/` don't call HTTP/SDK clients, LLM SDKs, `*Job.perform_later`, `*Mailer.deliver_later`, or `ActionCable.server.broadcast`** — those belong in `app/services/` / `app/agents/` / `app/clients/` (see [analyze-services §3.6.4](analyze-services.md#364-application-shaped-classes-under-appmodels--promote-up))
+- [ ] **LLM/AI SDK callers (`RubyLLM`, `OpenAI`, `Anthropic`, …) live in `app/agents/`** — not under `app/models/` as "calculators" (see [analyze-services §3.6.5](analyze-services.md#365-thin-sdk--broadcast-wrappers--delete-hoist-or-promote-in-that-order) + Phase 2.1 cluster table)
+- [ ] **No thin SDK / broadcast wrappers** — a class whose only job is to forward to `ActionCable.server.broadcast` / `RubyLLM.chat` / etc. without policy is dead weight; check the SDK's docs (RubyLLM ships its own retries, ActionCable's broadcast is already the public API)
 
 ### Callback Health (Warning)
 - [ ] New callbacks score 4+ on the scale
@@ -444,8 +464,10 @@ Location: `app/services/calculate_order_total_service.rb`
 
 ## Related
 
+- [Service-layer audit](analyze-services.md) — authoritative source for service classification (Phase 2.2), misplaced-code checks (§3.6.1–§3.6.5), and the "models-first variant" verdict criteria
 - [Specification test](../references/core/specification-test.md)
 - [Layer violations](../references/anti-patterns/layer-violations.md)
 - [Callbacks anti-patterns](../references/anti-patterns/callbacks.md)
 - [Service Objects anti-patterns](../references/anti-patterns/service-objects.md)
+- [AI Integration](../references/topics/ai-integration.md) — the `app/agents/` layer destination for LLM-backed classes
 - [Current attributes](../references/topics/current-attributes.md)

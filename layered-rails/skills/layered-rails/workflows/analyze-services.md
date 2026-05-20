@@ -124,12 +124,16 @@ The classification rule (purpose first, regex second) is defined once in Phase 2
 
 ### Decision gate after Phase 1
 
-- If `app/services/` is small/absent (the gate fired), the empirical mirror finds no coherent convention because there is nothing to sample, **and** the `app/models/` scan finds no application-layer leaks **and** no demote-able clusters → emit a short **"Mature decomposition"** or **"Mature decomposition (models-first variant)"** report and stop. (anycable-saaqs and fizzy follow this path.)
-- Otherwise → proceed to Phase 2.
+- If `app/services/` is small/absent (the gate fired), the empirical mirror finds no coherent convention because there is nothing to sample, **and** the `app/models/` scan finds no application-layer leaks, **and** no demote-able clusters, **and** no application-shaped classes hiding under `app/models/` (HTTP wrappers, third-party SDK wrappers, LLM-backed agents, multi-step orchestrators that enqueue jobs or call mailers, transport/broadcast wrappers) → emit a short **"Mature decomposition"** or **"Mature decomposition (models-first variant)"** report and stop. (anycable-saaqs and fizzy follow this path.)
+- Otherwise → the codebase has a **missing `app/services/`** (or a missing specialization). Recommend introducing `app/services/` for the application-layer pieces hidden under `app/models/`, and proceed to Phase 2 to shape the proposal. A single leak or a single application-shaped class is enough to disqualify the "mature decomposition" verdict — the audit's job is to surface it, not to wave it through under a "models-first" banner.
 
 #### Models-first stance recognition
 
 Some codebases keep all logic in `app/models/`, concerns, and jobs by design. Recognize this as a deliberate architectural choice, not a defect, and call out the trade-offs honestly.
+
+**What "models-first" actually means.** *Think on domain objects first, application services second* — **not** "no `app/services/` at all". A healthy models-first codebase can and should have `app/services/` for genuinely application-layer pieces: orchestration with downstream side effects (job enqueue, mail, AnyCable broadcast), third-party SDK wrappers, multi-step transactions whose body crosses layers, HTTP clients, transport/broadcast wrappers, AI agent layers. What a models-first codebase lacks is `app/services/` as the *primary* abstraction or as a *bag of random objects*. When application-shaped classes hide under `app/models/<concept>/`, the recommendation is **introduce `app/services/`** (and `app/agents/` for LLM clusters) — not "this is fine because we're models-first". The audit must never use "models-first" as a permission slip for keeping cross-layer dependencies in the Domain layer.
+
+**The model-first variant verdict requires a clean `app/models/` scan.** If the scan finds even one application-shaped class under `app/models/` — an HTTP client, an LLM caller, a class enqueueing jobs, a transport wrapper — the verdict is **Mixed**, not "Mature decomposition (models-first variant)". Surface the leak and the missing `app/services/`; the team's stance is preserved on the parts where it actually holds.
 
 **Signals:**
 - `app/services/` is absent and `app/models/` has deeply nested namespaces (`account/data_transfer/`, `signup/`, `notifier/`, …) holding non-AR action classes.
@@ -225,6 +229,7 @@ Do not propose the same destination for both groups unless their shapes genuinel
 | `Importer`, `Exporter`, `Sync`, `Webhook`, `Handler`, `Listener` | Background-processing / event-handling layer | ActiveJob with `active_job-performs`, Sidekiq workers, `karafka` for events | `references/anti-patterns.md` (anemic jobs) |
 | `Manager`, `Coordinator`, `Orchestrator` (no domain word) | Suspect god service — inspect | n/a | god-object analysis workflow |
 | `Serializer`, `Marshaller` | API serialization layer | `alba`, `panko`, `ams`, `jbuilder` | `references/patterns/serializers.md` |
+| `Agent`, `Extractor`, `Suggester`, `Writer`, `Checker`, `Classifier`, `Summarizer` **when the body calls an LLM SDK** (`RubyLLM`, `OpenAI::`, `Anthropic::`, `Gemini::`, `Cohere::`, `Bedrock::`, `Replicate::`) | AI agent layer (`app/agents/`) | RubyLLM agents (https://rubyllm.com/agents/), `active_agent`, hand-rolled `ApplicationAgent` | `references/topics/ai-integration.md` |
 | `Calculator`, `Score`, `Metric`, `Resolver` | Domain-services sub-layer (calculators, resolvers, queries — **demote candidates**) | hand-rolled POROs in `app/models/` | `references/patterns/query-objects.md` (Chapter 6 shape) |
 | `Builder` (when wrapping a value), small bundles of related attributes with no behavior of their own | Value object (**demote candidate**) | `Data.define`, `composed_of`, `store_model` | `references/patterns/value-objects.md` |
 | `Profile`, `Greeter`, `*Information` (a slice of one model's behavior) | Collaborator / delegate object (**demote candidate**) | plain Ruby object with `delegate`, polymorphic AR delegate | `references/patterns/collaborator-objects.md` |
@@ -249,7 +254,8 @@ For each candidate, read the file and ask: **what is the purpose of this class �
 **Mechanical signals — direct cross-layer calls.** A candidate is clearly **application-layer** if **any** of these appear directly in the body:
 
 - Calls a mailer, job, or another service (`*Mailer\.`, `\.deliver_(now|later)`, `\.perform_(now|later|async|in)`, `\w+Service\.call`).
-- Calls a third-party SDK / HTTP client (`Stripe::`, `OpenAI::`, `Slack::`, `AWS::`, `Twilio::`, `HTTP\.`, `Faraday`, `Net::HTTP`, `RestClient`, `HTTParty`).
+- Calls a third-party SDK / HTTP client (`Stripe::`, `Slack::`, `AWS::`, `Twilio::`, `HTTP\.`, `Faraday`, `Net::HTTP`, `RestClient`, `HTTParty`).
+- Calls an LLM / AI SDK (`RubyLLM`, `OpenAI::`, `Anthropic::`, `Gemini::`, `Cohere::`, `Bedrock::`, `Replicate::`, `langchainrb`). Treat as a cross-layer call; the cluster wants the AI agent layer — see the Phase 2.1 cluster table row for `Agent`/`Extractor`/`Suggester`/`Writer`/`Checker`.
 - Reads `Current.*` for business decisions, or accepts `request`/`params`.
 - Performs file/storage operations (`File.write`, `Tempfile`, `ActiveStorage::Blob`).
 
@@ -285,7 +291,9 @@ Other cases that pass the regex but are conceptually application-layer:
 
 Other cases that pass the regex but are conceptually domain-layer:
 
-- Pure calculators / value-object builders that happen to use `ActiveStorage::Blob` to read attached data (the storage read is reading domain state, not orchestrating delivery).
+- Pure calculators / value-object builders that happen to use Rails infra models like `ActiveStorage::Blob` to read attached data (the storage read is reading domain state, not orchestrating delivery). **SDK/HTTP calls do not get the purpose-first carve-out**.
+
+**LLM/AI SDK calls are not domain calculators.** Calls to `RubyLLM`, `OpenAI`, `Anthropic`, etc. are network round-trips to a third party — qualitatively different from an `ActiveStorage::Blob` read. A "calculator that derives information from domain data via an LLM" is an **agent**, and the cluster's destination is the AI agent layer (`app/agents/` — see Phase 2.1 cluster table). Do not write "purpose-first carve-out, classification is domain" for an LLM-backed class. Even a single LLM caller is application-layer; ≥3–4 of them form a recognizable cluster worth promoting to a dedicated layer.
 
 **Name signals — corroborating only.** Combine with the mechanical or purpose test:
 
@@ -985,6 +993,51 @@ When a service requires interactive I/O libraries (`highline`, `io/console`), ta
 ```bash
 grep -rlE "require ['\"]highline['\"]|require ['\"]io/console['\"]|STDOUT\b|\$stdout\b" app/services/ | head
 ```
+
+#### 3.6.4 Application-shaped classes under `app/models/` — promote up
+
+The self-separation gate (§3.6.1) is **scoped to files inside `app/services/`**. It does **not** apply to non-AR classes under `app/models/`. Do not lift the gate's "self-separated, no relocation needed" reasoning to a model-layer file by analogy — that's how application-layer leaks get rubber-stamped under a models-first banner.
+
+When a non-AR class under `app/models/` is **structurally an application service**, the right destination is `app/services/` (or a specialization layer — `app/agents/`, `app/clients/`, `app/notifiers/`). Naming the class under a `<concept>/` namespace doesn't make it domain. Triggers:
+
+- HTTP client wrapping (`Net::HTTP`, `Faraday`, `RestClient`, `HTTParty`).
+- Third-party SDK wrapping (`Stripe::`, `Slack::`, `AWS::`, `Twilio::`, …).
+- **LLM/AI SDK wrapping** (`RubyLLM`, `OpenAI`, `Anthropic`, …) → `app/agents/`, see Phase 2.1.
+- Multi-step orchestration whose body enqueues jobs (`*Job.perform_(now|later)`) or calls mailers/deliveries (`*Mailer.`, `.deliver_(now|later)`).
+- Transport/broadcast wrappers (`ActionCable.server.broadcast`, AnyCable, pub-sub primitives).
+
+**Concrete practical cost — name it in the report.** The class pulls cross-layer dependencies (HTTP, LLM SDKs, AnyCable, third-party gems) into the Domain-layer autoload graph and into every model-spec boot. Moving it to `app/services/` (or the specialization layer) eliminates that pull and lets the Domain layer's test suite run without those dependencies stubbed.
+
+```bash
+# Application-shaped non-AR classes hiding under app/models/
+for f in $(find app/models -name "*.rb" -type f); do
+  grep -qE "< (ApplicationRecord|ActiveRecord::Base)" "$f" && continue
+  if grep -qE "Net::HTTP|Faraday|RestClient|HTTParty|Stripe::|Slack::|Twilio::|AWS::|RubyLLM|OpenAI::|Anthropic::|\.perform_(later|now)|\.deliver_(later|now)|ActionCable\.server\.broadcast" "$f"; then
+    echo "application-shaped under app/models/: $f"
+  fi
+done
+```
+
+#### 3.6.5 Thin SDK / broadcast wrappers — delete, hoist, or promote (in that order)
+
+When a class or module exists only to wrap a single SDK call (`ActionCable.server.broadcast`, `RubyLLM.chat`, `OpenAI::Client#chat`, `Stripe::Charge.create`) with no error policy beyond what the SDK already provides, no signing logic, no batching, no auth refresh, and no domain rule — the wrapper adds **no value**. Diagnose as **"thin SDK wrapper, no value-add"** and recommend in this order:
+
+1. **Delete** the wrapper and call the SDK directly at the call site. Best when the wrapper is a one-line passthrough (`def broadcast(stream, payload) = ActionCable.server.broadcast(stream, payload)`).
+2. **Hoist** the genuinely shared concern (stream signing, payload shaping, prompt formatting) into a `Broadcastable` / `Promptable` **concern** or a base-class method on the consumer — not a separate wrapping object. A one-helper concern beats a one-method module.
+3. **Promote** to `app/services/` (or `app/agents/` for LLM, `app/clients/` for HTTP) only when the wrapper *does* add a real policy worth keeping: retry beyond the SDK's, multi-step protocol, auth refresh, request signing, rate-limit accounting.
+
+**Verify before recommending the wrapper stay.** Check the SDK's docs (use the framework-docs-researcher or context7 if available) for what it already provides. Examples to call out specifically:
+
+- `RubyLLM` ships built-in retries (`RubyLLM.configure { |c| c.max_retries = ... }`). A standalone `Retries.with_retries { RubyLLM.chat ... }` wrapper is dead weight — recommend deletion.
+- `ActionCable.server.broadcast` is already the public API. Wrapping it to add nothing but a renamed method (`Cable.broadcast(stream, payload)`) is dead weight — recommend deletion + direct call, or a `Broadcastable` concern with `signed_stream_for(record)` if signing is the shared concern.
+
+The tell for "no value-add":
+
+- The wrapper method body is one line that calls the underlying SDK.
+- The retry/exception/timeout policy duplicates what the SDK already configures.
+- Configuration-style code (`configured?`, `api_key`) lives in the wrapper instead of in a `*Config` class — surface the misplacement; that part belongs in `config/configs/`.
+
+When recommending deletion or relocation, **always quote the underlying SDK's docs** for the feature the wrapper claims to add. "RubyLLM already retries (link)" is a stronger recommendation than "this wrapper looks thin".
 
 ### 3.7 Peer-File Detection
 
