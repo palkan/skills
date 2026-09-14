@@ -2,6 +2,8 @@
 
 ## master
 
+- Added `active_event_store` gem reference (domain events over Rails Event Store) and linked it from the event-driven callback extraction example.
+
 ## 3.1.0 (2026-09-01)
 
 - Updated archspec guide (added `except:` section)

@@ -104,6 +104,12 @@ class WelcomeEmailSubscriber
 end
 ```
 
+Rather than hand-rolling the publisher and subscriber, `active_event_store`
+provides both over Rails Event Store, with after-commit dispatch and test
+helpers. See the gem reference linked from `SKILL.md`. Prefer the event-driven
+extraction for *remote peer communication* (analytics, CRM sync); prefer a
+service object for context-sensitive steps of a single process.
+
 ## God Object Identification
 
 ### Churn × Complexity Metric
