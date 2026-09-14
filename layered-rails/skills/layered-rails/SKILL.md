@@ -198,6 +198,7 @@ For library-specific guidance:
 | view_component | Component framework | [view-component.md](references/gems/view-component.md) |
 | anyway_config | Typed configuration | [anyway-config.md](references/gems/anyway-config.md) |
 | active_delivery | Multi-channel notifications | [active-delivery.md](references/gems/active-delivery.md) |
+| active_event_store | Domain events over Rails Event Store | [active-event-store.md](references/gems/active-event-store.md) |
 | alba | JSON serialization | [alba.md](references/gems/alba.md) |
 | workflow | State machines | [workflow.md](references/gems/workflow.md) |
 | rubanok | Filter/transformation DSL | [rubanok.md](references/gems/rubanok.md) |
